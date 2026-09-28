@@ -11,9 +11,7 @@ and suppression behaviour as the C# original, from the same GPO data.
 ![The HTML report](docs/img/report-overview.png)
 
 **[See a full example report](example-report.html)** — download and open it
-locally; GitHub serves HTML as plain text. It is generated from a synthetic
-domain by [`examples/demo-report/`](examples/demo-report/), so it can live in the
-repo without anything real in it.
+locally; GitHub serves HTML as plain text. 
 
 ## Why
 
