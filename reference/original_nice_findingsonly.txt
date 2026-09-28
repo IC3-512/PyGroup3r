@@ -1,0 +1,864 @@
+2026-09-25 12:09:37 +02:00 [Info] Parsed args successfully.
+2026-09-25 12:09:37 +02:00 [Error] System.Security.Cryptography.CryptographicException: Bad PKCS7 padding. Invalid length 0.
+  at Mono.Security.Cryptography.SymmetricTransform.ThrowBadPaddingException (System.Security.Cryptography.PaddingMode padding, System.Int32 length, System.Int32 position) [0x0005c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.FinalDecrypt (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00179] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.TransformFinalBlock (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00034] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at LibSnaffle.ActiveDirectory.GpoSetting.DecryptCpassword (System.String cpassword) [0x00088] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+  at LibSnaffle.ActiveDirectory.XmlGpoFile.GetSettings () [0x00676] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+2026-09-25 12:09:37 +02:00 [Error] System.Security.Cryptography.CryptographicException: Bad PKCS7 padding. Invalid length 0.
+  at Mono.Security.Cryptography.SymmetricTransform.ThrowBadPaddingException (System.Security.Cryptography.PaddingMode padding, System.Int32 length, System.Int32 position) [0x0005c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.FinalDecrypt (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00179] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.TransformFinalBlock (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00034] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at LibSnaffle.ActiveDirectory.GpoSetting.DecryptCpassword (System.String cpassword) [0x00088] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+  at LibSnaffle.ActiveDirectory.XmlGpoFile.GetSettings () [0x00676] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+2026-09-25 12:09:37 +02:00 [Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{5CFC9C70-A964-4FA0-A1EB-91C36271CA98}/User/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at System.Security.AccessControl.NativeObjectSecurity.InternalGet (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00024] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections, System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode exceptionFromErrorCode, System.Object exceptionContext) [0x0000c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.FileSystemSecurity..ctor (System.Boolean isContainer, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.DirectorySecurity..ctor (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.IO.Directory.GetAccessControl (System.String path, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Group3r.Assessment.FsAclAnalyser.AnalyseFsAcl (System.IO.FileSystemInfo filesysInfo) [0x001df] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalyseDirPath (System.String dirPath) [0x00093] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x000e5] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+2026-09-25 12:09:37 +02:00 [Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{5CFC9C70-A964-4FA0-A1EB-91C36271CA98}/User/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at System.Security.AccessControl.NativeObjectSecurity.InternalGet (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00024] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections, System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode exceptionFromErrorCode, System.Object exceptionContext) [0x0000c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.FileSystemSecurity..ctor (System.Boolean isContainer, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.DirectorySecurity..ctor (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.IO.Directory.GetAccessControl (System.String path, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Group3r.Assessment.FsAclAnalyser.AnalyseFsAcl (System.IO.FileSystemInfo filesysInfo) [0x001df] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalyseDirPath (System.String dirPath) [0x00093] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x000e5] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+2026-09-25 12:09:37 +02:00 [Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{2CE5ACF5-D072-4267-8E45-5C8F8843DEC6}/Machine/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x00037] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+2026-09-25 12:09:37 +02:00 [Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{36FA6290-EFEE-4909-845A-4A33A04D3088}/Machine/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x00037] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {31B2F340-016D-11D2-945F-00C04FB984F9} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{31B2F340-016D-11D2-945F-00C04FB984F9} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {5CFC9C70-A964-4FA0-A1EB-91C36271CA98} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{5CFC9C70-A964-4FA0-A1EB-91C36271CA98} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {6AC1786C-016F-11D2-945F-00C04fB984F9} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{6AC1786C-016F-11D2-945F-00C04fB984F9} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - Computer Policy | User Rights Assignment         |
+|---------------------------|--------------------------------|
+| Privilege Name            | SeAssignPrimaryTokenPrivilege  |
+| Trustee                   | Failed SID resolution S-1-5-20 |
+|                           | Failed SID resolution S-1-5-19 |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | User/group assigned an interesting OS privilege.                               |
+| Detail  | SeAssignPrimaryTokenPrivilege was assigned to Failed SID resolution - S-1-5-19 |
+
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {DEF162C4-FD6F-4A61-944A-A10FA914872A} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{DEF162C4-FD6F-4A61-944A-A10FA914872A} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - Computer Policy | Group         |
+|---------------------------|---------------|
+| Name                      | S-1-5-32-555  |
+| Action                    | Update        |
+| Delete All Groups         | False         |
+| Delete All Users          | False         |
+| Remove Accounts           | False         |
+| Member                    | Update fuck   |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group BUILTIN\Remote Desktop Users is having fuck added to it.                 |
+
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {F1EB7588-E641-4676-B2A5-C706B671368A} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{F1EB7588-E641-4676-B2A5-C706B671368A} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - Computer Policy | Script                          |
+|---------------------------|---------------------------------|
+| Script Type               | Startup                         |
+| CmdLine                   | C:\Users\l0ss\Desktop\thing.ps1 |
+| Args                      | -Password Password1             |
+    \___
+        | Finding | Yellow                                                                           |
+|---------|----------------------------------------------------------------------------------|
+| Reason  | Startup script has an arguments setting that looks like it might have a password |
+|         | in it?                                                                           |
+| Detail  | Arguments were: -Password Password1                                              |
+
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {96A25CFB-0CAF-4D19-99D2-D75E966DE5B5} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{96A25CFB-0CAF-4D19-99D2-D75E966DE5B5} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - User Policy | Data Source            |
+|-----------------------|------------------------|
+| Name                  | thing                  |
+| Action                | Create                 |
+| Description           | hlkjhlkj               |
+| Driver                | SQL Server             |
+| UserName              | hgkjhgkjh\tkuhgk       |
+| Cpassword             | /yIv9hPoIkBuYXZZ7onYlg |
+| Password              | thing                  |
+    \___
+        | Finding | Black                                              |
+|---------|----------------------------------------------------|
+| Reason  | Group Policy Preferences password found:qwer       |
+| Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63 |
+    \___
+        | Finding | Green                                                   |
+|---------|---------------------------------------------------------|
+| Reason  | Potentially useful database connection info identified. |
+| Detail  | Could be helpful for targeting other attacks.           |
+
+\___
+    | Setting - User Policy | Data Source            |
+|-----------------------|------------------------|
+| Name                  | yuio                   |
+| Action                | Create                 |
+| Description           | DGDHJ                  |
+| Driver                | HJKL                   |
+| UserName              | VCXV                   |
+| Cpassword             | /yIv9hPoIkBuYXZZ7onYlg |
+| Password              | yuio                   |
+    \___
+        | Finding | Black                                              |
+|---------|----------------------------------------------------|
+| Reason  | Group Policy Preferences password found:qwer       |
+| Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63 |
+    \___
+        | Finding | Green                                                   |
+|---------|---------------------------------------------------------|
+| Reason  | Potentially useful database connection info identified. |
+| Detail  | Could be helpful for targeting other attacks.           |
+
+\___
+    | Setting - Computer Policy | Scheduled Task |
+|---------------------------|----------------|
+| Name                      | asdf           |
+| Task Type                 | Task           |
+| Enabled                   | False          |
+| Name                      | asdf           |
+    \___
+        | Principal | 1                                           |
+|-----------|---------------------------------------------|
+| UserID    | loser                                       |
+| Cpassword | VPe/o9YRyz2cksnYRbNeQm7VCbUL4TNA9JxlRT15GcA |
+| Password  | Password2                                   |
+    \___
+        | Execute Action    |          |
+|-------------------|----------|
+| Command           | calc.exe |
+| Args              | wheee    |
+| Working Directory | C:\temp  |
+    \___
+        | Triggers |  |
+|----------|--|
+    \___
+        | Finding | Black                                              |
+|---------|----------------------------------------------------|
+| Reason  | Group Policy Preferences password found:Password2  |
+| Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63 |
+
+\___
+    | Setting - Computer Policy | Scheduled Task |
+|---------------------------|----------------|
+| Name                      | asdffasdf      |
+| Task Type                 | ImmediateTask  |
+| Enabled                   | False          |
+| Name                      | asdffasdf      |
+    \___
+        | Principal | 1                      |
+|-----------|------------------------|
+| UserID    | asdfsdf                |
+| Cpassword | Qd7SkrRYaGMvOlLz1Qyk3A |
+| Password  | asdf                   |
+    \___
+        | Execute Action    |         |
+|-------------------|---------|
+| Command           | asdfdf  |
+| Args              | sdfasdf |
+| Working Directory | asdfsdf |
+    \___
+        | Finding | Black                                              |
+|---------|----------------------------------------------------|
+| Reason  | Group Policy Preferences password found:asdf       |
+| Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63 |
+
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {2CE5ACF5-D072-4267-8E45-5C8F8843DEC6} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{2CE5ACF5-D072-4267-8E45-5C8F8843DEC6} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - User Policy | Script                    |
+|-----------------------|---------------------------|
+| Script Type           | Logon                     |
+| CmdLine               | Fuck.ps1                  |
+| Args                  | -password ispasswordstill |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | Logon script has an arguments setting that looks like it might have a password |
+|         | in it?                                                                         |
+| Detail  | Arguments were: -password ispasswordstill                                      |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+|---------------------------|-----------------|
+| MaxRenewAge               | 10              |
+    \___
+        | Finding | Green                                                      |
+|---------|------------------------------------------------------------|
+| Reason  | Non-default maximum Kerberos renewal period configured. 10 |
+| Detail  | Dunno, bit interesting.                                    |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+|---------------------------|-----------------|
+| TicketValidateClient      | 0               |
+    \___
+        | Finding | Green                                                                         |
+|---------|-------------------------------------------------------------------------------|
+| Reason  | Kerberos 'Enforce user logon restrictions' setting is disabled.               |
+| Detail  | Probably no significant impact, read here for more details:                   |
+|         | https://docs.microsoft.com/en-us/windows/security/threat-protection/security- |
+|         | policy-settings/enforce-user-logon-restrictions                               |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+|---------------------------|---------------------------------------------------------|
+| Action                    | Update                                                  |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+| Value Name                | EveryoneIncludesAnonymous                               |
+| Value Type                | REG_DWORD                                               |
+| Value String              | 1                                                       |
+    \___
+        | Finding | Yellow                                                                          |
+|---------|---------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough  |
+|         | for me.                                                                         |
+| Detail  | Determines what additional permissions are granted for anonymous connections to |
+|         | the computer e.g. enumerating the names of domain accounts and network shares.  |
+|         | Network access: Let Everyone permissions apply to anonymous users               |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+|---------------------------|---------------------------------------------------------|
+| Action                    | Update                                                  |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+| Value Name                | LmCompatibilityLevel                                    |
+| Value Type                | REG_DWORD                                               |
+| Value String              | 0                                                       |
+    \___
+        | Finding | Black                                                                            |
+|---------|----------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a 'less-than-good' value, which made it             |
+|         | interesting.                                                                     |
+| Detail  | Determines which challenge response authentication protocol is used for network  |
+|         | logons. If set lower than 3, NTLMv1 auth will be supported. Coerce auth from     |
+|         | this machine with PetitPotam or PrinterBug, catch the auth with Responder (with  |
+|         | the --disable-ess parameter), and crack it down to an NT hash here:              |
+|         | https://crack.sh/get-cracking/. After that, consider silver ticket to compromise |
+|         | the host. Network security: LAN Manager authentication level                     |
+
+\___
+    | Setting - Computer Policy | Registry                                                                         |
+|---------------------------|----------------------------------------------------------------------------------|
+| Action                    | Update                                                                           |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Paramete- |
+|                           | rs                                                                               |
+| Value Name                | EnablePlainTextPassword                                                          |
+| Value Type                | REG_DWORD                                                                        |
+| Value String              | 1                                                                                |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough |
+|         | for me.                                                                        |
+| Detail  | If enabled, the Server Message Block (SMB) redirector is allowed to send       |
+|         | plaintext passwords to non-Microsoft SMB servers that do not support password  |
+|         | encryption during authentication. Microsoft network client: Send unencrypted   |
+|         | password to third-party SMB servers                                            |
+
+\___
+    | Setting - Computer Policy | Registry                                                  |
+|---------------------------|-----------------------------------------------------------|
+| Action                    | Update                                                    |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LDAP |
+| Value Name                | LDAPClientIntegrity                                       |
+| Value Type                | REG_DWORD                                                 |
+| Value String              | 0                                                         |
+    \___
+        | Finding | Yellow                                                                           |
+|---------|----------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough   |
+|         | for me.                                                                          |
+| Detail  | determines the level of data signing that is requested on behalf of clients      |
+|         | issuing LDAP BIND requests. Options include None, Negotiate signing, and Require |
+|         | Signature. Network security: LDAP client signing requirements                    |
+
+\___
+    | Setting - Computer Policy | Group                                      |
+|---------------------------|--------------------------------------------|
+| Name                      | S-1-5-32-551                               |
+| Action                    | Update                                     |
+| Delete All Groups         | False                                      |
+| Delete All Users          | False                                      |
+| Remove Accounts           | False                                      |
+| Member                    | Update Failed SID resolution  S-1-5-32-545 |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Backup Operators is having Failed SID resolution added to it.            |
+
+\___
+    | Setting - Computer Policy | Service          |
+|---------------------------|------------------|
+| Service Name              | "XblAuthManager" |
+| Startup Type              | Disabled         |
+    \___
+        | Finding | Red                                                                            |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A Windows service's ACL is being configured to grant abusable permissions to a |
+|         | target trustee.                                                                |
+| Detail  | This should allow local privilege escalation on affected hosts. Service:       |
+|         | XblAuthManager, Trustee: Domain Users - S-1-5-21-<DOMAIN>-513                  |
+
+\___
+    | Setting - Computer Policy | Registry                                                           |
+|---------------------------|--------------------------------------------------------------------|
+| Action                    | Update                                                             |
+| Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal |
+|                           | Services\Client\UsbBlockDeviceBySetupClasses                       |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | Found some interesting ACEs on a registry key, probably because someone was    |
+|         | being given control of it.                                                     |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | The Users trustee has been granted rights to modify this registry key.         |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | The Users trustee has been granted additional rights over this registry key.   |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+
+\___
+    | Setting - Computer Policy | Script                           |
+|---------------------------|----------------------------------|
+| Script Type               | Shutdown                         |
+| CmdLine                   | \\l0sslab-client\share\thing.ps1 |
+| Args                      | -Password StillBad1              |
+    \___
+        | Finding | Yellow                                                                   |
+|---------|--------------------------------------------------------------------------|
+| Reason  | Shutdown script has an arguments setting that looks like it might have a |
+|         | password in it?                                                          |
+| Detail  | Arguments were: -Password StillBad1                                      |
+
+\___
+    | Setting - Computer Policy | Scheduled Task                          |
+|---------------------------|-----------------------------------------|
+| Name                      | jesus christ there are too many options |
+| Task Type                 | TaskV2                                  |
+| Enabled                   | True                                    |
+| Name                      | jesus christ there are too many options |
+    \___
+        | Principal | 1                |
+|-----------|------------------|
+| Id        | Author           |
+| UserID    | l0sslab\liam     |
+| LogonType | S4U              |
+| RunLevel  | HighestAvailable |
+    \___
+        | Message Action |       |
+|----------------|-------|
+| Title          | hello |
+| Body           | shit  |
+    \___
+        | Execute Action |                   |
+|----------------|-------------------|
+| Command        | C:\temp\shit.ps1  |
+| Args           | asdf -p password1 |
+    \___
+        | Email Action |                                             |
+|--------------|---------------------------------------------|
+| From         | jeff                                        |
+| To           | jeff                                        |
+| Subject      | blah                                        |
+| Body         | blangle                                     |
+| Server       | mail.fuck.com                               |
+| Attachment   | \\l0sslab.local\share\fuck.txt, other thing |
+    \___
+        | Triggers |                                                                                  |
+|----------|----------------------------------------------------------------------------------|
+|          | <StartBoundary>2018-12-                                                          |
+|          | 30T07:20:42</StartBoundary><Enabled>true</Enabled><ScheduleByDay><DaysInterval>- |
+|          | 1</DaysInterval></ScheduleByDay>                                                 |
+|          | <Enabled>true</Enabled>                                                          |
+|          | <StartBoundary>2019-01-15T00:39:36</StartBoundary><Enabled>true</Enabled>        |
+    \___
+        | Finding | Yellow                                                                       |
+|---------|------------------------------------------------------------------------------|
+| Reason  | Scheduled Task exec action has an arguments setting that looks like it might |
+|         | have a password in it?                                                       |
+| Detail  | Arguments were: asdf -p password1                                            |
+    \___
+        | Finding | Green                                                         |
+|---------|---------------------------------------------------------------|
+| Reason  | Scheduled Task is emailing attachments. Could be interesting. |
+| Detail  | Check out \\l0sslab.local\share\fuck.txt, other thing         |
+
+\___
+    | Setting - Computer Policy | Scheduled Task  |
+|---------------------------|-----------------|
+| Name                      | asdfasdf        |
+| Task Type                 | ImmediateTaskV2 |
+| Enabled                   | True            |
+| Name                      | asdfasdf        |
+    \___
+        | Principal | 1                |
+|-----------|------------------|
+| Id        | Author           |
+| UserID    | l0sslab\l0ss     |
+| LogonType | InteractiveToken |
+| RunLevel  | HighestAvailable |
+    \___
+        | Execute Action |                      |
+|----------------|----------------------|
+| Command        | C:\path\evil.bat     |
+| Args           | -password ispassword |
+    \___
+        | Email Action |                 |
+|--------------|-----------------|
+| From         | asdf            |
+| To           | sdf             |
+| Subject      | asdf            |
+| Body         | qwer            |
+| Server       | asdf.asdt.tsadt |
+    \___
+        | Triggers |                                                                                  |
+|----------|----------------------------------------------------------------------------------|
+|          | <StartBoundary>%LocalTimeXmlEx%</StartBoundary><EndBoundary>%LocalTimeXmlEx%</E- |
+|          | ndBoundary><Enabled>true</Enabled>                                               |
+    \___
+        | Finding | Yellow                                                                       |
+|---------|------------------------------------------------------------------------------|
+| Reason  | Scheduled Task exec action has an arguments setting that looks like it might |
+|         | have a password in it?                                                       |
+| Detail  | Arguments were: -password ispassword                                         |
+
+\___
+    | Setting - Computer Policy | Group          |
+|---------------------------|----------------|
+| Name                      | administrators |
+| Action                    | Update         |
+| NewName                   | fuckers        |
+| Delete All Groups         | False          |
+| Delete All Users          | False          |
+| Remove Accounts           | False          |
+| Member                    | Add lowpriv    |
+| Member                    | Add liam       |
+| Member                    | Add l0ss       |
+    \___
+        | Finding | Green                                            |
+|---------|--------------------------------------------------|
+| Reason  | A privileged local group is being renamed.       |
+| Detail  | Group Administrators is being renamed to fuckers |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having lowpriv added to it.                            |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having liam added to it.                               |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having l0ss added to it.                               |
+
+
+2026-09-25 12:09:37 +02:00 [GPO] 
+| GPO             | (No Display Name) {36FA6290-EFEE-4909-845A-4A33A04D3088} Current                      |
+|-----------------|---------------------------------------------------------------------------------------|
+| Date Created    | 1/1/0001 12:00:00 AM                                                                  |
+| Date Modified   | 1/1/0001 12:00:00 AM                                                                  |
+| Path in SYSVOL  | /opt/group3r/upstream/TestSysvol/Policies/{36FA6290-EFEE-4909-845A-4A33A04D3088} |
+| Computer Policy | Disabled                                                                              |
+| User Policy     | Disabled                                                                              |
+\___
+    | Setting - User Policy | Script                    |
+|-----------------------|---------------------------|
+| Script Type           | Logon                     |
+| CmdLine               | Fuck.ps1                  |
+| Args                  | -password ispasswordstill |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | Logon script has an arguments setting that looks like it might have a password |
+|         | in it?                                                                         |
+| Detail  | Arguments were: -password ispasswordstill                                      |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+|---------------------------|-----------------|
+| MaxRenewAge               | 10              |
+    \___
+        | Finding | Green                                                      |
+|---------|------------------------------------------------------------|
+| Reason  | Non-default maximum Kerberos renewal period configured. 10 |
+| Detail  | Dunno, bit interesting.                                    |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+|---------------------------|-----------------|
+| TicketValidateClient      | 0               |
+    \___
+        | Finding | Green                                                                         |
+|---------|-------------------------------------------------------------------------------|
+| Reason  | Kerberos 'Enforce user logon restrictions' setting is disabled.               |
+| Detail  | Probably no significant impact, read here for more details:                   |
+|         | https://docs.microsoft.com/en-us/windows/security/threat-protection/security- |
+|         | policy-settings/enforce-user-logon-restrictions                               |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+|---------------------------|---------------------------------------------------------|
+| Action                    | Update                                                  |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+| Value Name                | EveryoneIncludesAnonymous                               |
+| Value Type                | REG_DWORD                                               |
+| Value String              | 1                                                       |
+    \___
+        | Finding | Yellow                                                                          |
+|---------|---------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough  |
+|         | for me.                                                                         |
+| Detail  | Determines what additional permissions are granted for anonymous connections to |
+|         | the computer e.g. enumerating the names of domain accounts and network shares.  |
+|         | Network access: Let Everyone permissions apply to anonymous users               |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+|---------------------------|---------------------------------------------------------|
+| Action                    | Update                                                  |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+| Value Name                | LmCompatibilityLevel                                    |
+| Value Type                | REG_DWORD                                               |
+| Value String              | 0                                                       |
+    \___
+        | Finding | Black                                                                            |
+|---------|----------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a 'less-than-good' value, which made it             |
+|         | interesting.                                                                     |
+| Detail  | Determines which challenge response authentication protocol is used for network  |
+|         | logons. If set lower than 3, NTLMv1 auth will be supported. Coerce auth from     |
+|         | this machine with PetitPotam or PrinterBug, catch the auth with Responder (with  |
+|         | the --disable-ess parameter), and crack it down to an NT hash here:              |
+|         | https://crack.sh/get-cracking/. After that, consider silver ticket to compromise |
+|         | the host. Network security: LAN Manager authentication level                     |
+
+\___
+    | Setting - Computer Policy | Registry                                                                         |
+|---------------------------|----------------------------------------------------------------------------------|
+| Action                    | Update                                                                           |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Paramete- |
+|                           | rs                                                                               |
+| Value Name                | EnablePlainTextPassword                                                          |
+| Value Type                | REG_DWORD                                                                        |
+| Value String              | 1                                                                                |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough |
+|         | for me.                                                                        |
+| Detail  | If enabled, the Server Message Block (SMB) redirector is allowed to send       |
+|         | plaintext passwords to non-Microsoft SMB servers that do not support password  |
+|         | encryption during authentication. Microsoft network client: Send unencrypted   |
+|         | password to third-party SMB servers                                            |
+
+\___
+    | Setting - Computer Policy | Registry                                                  |
+|---------------------------|-----------------------------------------------------------|
+| Action                    | Update                                                    |
+| Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LDAP |
+| Value Name                | LDAPClientIntegrity                                       |
+| Value Type                | REG_DWORD                                                 |
+| Value String              | 0                                                         |
+    \___
+        | Finding | Yellow                                                                           |
+|---------|----------------------------------------------------------------------------------|
+| Reason  | This registry key was set to a non-default value, which was interesting enough   |
+|         | for me.                                                                          |
+| Detail  | determines the level of data signing that is requested on behalf of clients      |
+|         | issuing LDAP BIND requests. Options include None, Negotiate signing, and Require |
+|         | Signature. Network security: LDAP client signing requirements                    |
+
+\___
+    | Setting - Computer Policy | Group                                      |
+|---------------------------|--------------------------------------------|
+| Name                      | S-1-5-32-551                               |
+| Action                    | Update                                     |
+| Delete All Groups         | False                                      |
+| Delete All Users          | False                                      |
+| Remove Accounts           | False                                      |
+| Member                    | Update Failed SID resolution  S-1-5-32-545 |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Backup Operators is having Failed SID resolution added to it.            |
+
+\___
+    | Setting - Computer Policy | Service          |
+|---------------------------|------------------|
+| Service Name              | "XblAuthManager" |
+| Startup Type              | Disabled         |
+    \___
+        | Finding | Red                                                                            |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A Windows service's ACL is being configured to grant abusable permissions to a |
+|         | target trustee.                                                                |
+| Detail  | This should allow local privilege escalation on affected hosts. Service:       |
+|         | XblAuthManager, Trustee: Domain Users - S-1-5-21-<DOMAIN>-513                  |
+
+\___
+    | Setting - Computer Policy | Registry                                                           |
+|---------------------------|--------------------------------------------------------------------|
+| Action                    | Update                                                             |
+| Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\Terminal |
+|                           | Services\Client\UsbBlockDeviceBySetupClasses                       |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | Found some interesting ACEs on a registry key, probably because someone was    |
+|         | being given control of it.                                                     |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+    \___
+        | Finding | Yellow                                                                         |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | The Users trustee has been granted rights to modify this registry key.         |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | The Users trustee has been granted additional rights over this registry key.   |
+| Detail  | You'll need to take a closer look at this key to know if this has any value at |
+|         | all. Good luck.                                                                |
+
+\___
+    | Setting - Computer Policy | Script                           |
+|---------------------------|----------------------------------|
+| Script Type               | Shutdown                         |
+| CmdLine                   | \\l0sslab-client\share\thing.ps1 |
+| Args                      | -Password StillBad1              |
+    \___
+        | Finding | Yellow                                                                   |
+|---------|--------------------------------------------------------------------------|
+| Reason  | Shutdown script has an arguments setting that looks like it might have a |
+|         | password in it?                                                          |
+| Detail  | Arguments were: -Password StillBad1                                      |
+
+\___
+    | Setting - Computer Policy | Scheduled Task                          |
+|---------------------------|-----------------------------------------|
+| Name                      | jesus christ there are too many options |
+| Task Type                 | TaskV2                                  |
+| Enabled                   | True                                    |
+| Name                      | jesus christ there are too many options |
+    \___
+        | Principal | 1                |
+|-----------|------------------|
+| Id        | Author           |
+| UserID    | l0sslab\liam     |
+| LogonType | S4U              |
+| RunLevel  | HighestAvailable |
+    \___
+        | Message Action |       |
+|----------------|-------|
+| Title          | hello |
+| Body           | shit  |
+    \___
+        | Execute Action |                   |
+|----------------|-------------------|
+| Command        | C:\temp\shit.ps1  |
+| Args           | asdf -p password1 |
+    \___
+        | Email Action |                                             |
+|--------------|---------------------------------------------|
+| From         | jeff                                        |
+| To           | jeff                                        |
+| Subject      | blah                                        |
+| Body         | blangle                                     |
+| Server       | mail.fuck.com                               |
+| Attachment   | \\l0sslab.local\share\fuck.txt, other thing |
+    \___
+        | Triggers |                                                                                  |
+|----------|----------------------------------------------------------------------------------|
+|          | <StartBoundary>2018-12-                                                          |
+|          | 30T07:20:42</StartBoundary><Enabled>true</Enabled><ScheduleByDay><DaysInterval>- |
+|          | 1</DaysInterval></ScheduleByDay>                                                 |
+|          | <Enabled>true</Enabled>                                                          |
+|          | <StartBoundary>2019-01-15T00:39:36</StartBoundary><Enabled>true</Enabled>        |
+    \___
+        | Finding | Yellow                                                                       |
+|---------|------------------------------------------------------------------------------|
+| Reason  | Scheduled Task exec action has an arguments setting that looks like it might |
+|         | have a password in it?                                                       |
+| Detail  | Arguments were: asdf -p password1                                            |
+    \___
+        | Finding | Green                                                         |
+|---------|---------------------------------------------------------------|
+| Reason  | Scheduled Task is emailing attachments. Could be interesting. |
+| Detail  | Check out \\l0sslab.local\share\fuck.txt, other thing         |
+
+\___
+    | Setting - Computer Policy | Scheduled Task  |
+|---------------------------|-----------------|
+| Name                      | asdfasdf        |
+| Task Type                 | ImmediateTaskV2 |
+| Enabled                   | True            |
+| Name                      | asdfasdf        |
+    \___
+        | Principal | 1                |
+|-----------|------------------|
+| Id        | Author           |
+| UserID    | l0sslab\l0ss     |
+| LogonType | InteractiveToken |
+| RunLevel  | HighestAvailable |
+    \___
+        | Execute Action |                      |
+|----------------|----------------------|
+| Command        | C:\path\evil.bat     |
+| Args           | -password ispassword |
+    \___
+        | Email Action |                 |
+|--------------|-----------------|
+| From         | asdf            |
+| To           | sdf             |
+| Subject      | asdf            |
+| Body         | qwer            |
+| Server       | asdf.asdt.tsadt |
+    \___
+        | Triggers |                                                                                  |
+|----------|----------------------------------------------------------------------------------|
+|          | <StartBoundary>%LocalTimeXmlEx%</StartBoundary><EndBoundary>%LocalTimeXmlEx%</E- |
+|          | ndBoundary><Enabled>true</Enabled>                                               |
+    \___
+        | Finding | Yellow                                                                       |
+|---------|------------------------------------------------------------------------------|
+| Reason  | Scheduled Task exec action has an arguments setting that looks like it might |
+|         | have a password in it?                                                       |
+| Detail  | Arguments were: -password ispassword                                         |
+
+\___
+    | Setting - Computer Policy | Group          |
+|---------------------------|----------------|
+| Name                      | administrators |
+| Action                    | Update         |
+| NewName                   | fuckers        |
+| Delete All Groups         | False          |
+| Delete All Users          | False          |
+| Remove Accounts           | False          |
+| Member                    | Add lowpriv    |
+| Member                    | Add liam       |
+| Member                    | Add l0ss       |
+    \___
+        | Finding | Green                                            |
+|---------|--------------------------------------------------|
+| Reason  | A privileged local group is being renamed.       |
+| Detail  | Group Administrators is being renamed to fuckers |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having lowpriv added to it.                            |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having liam added to it.                               |
+    \___
+        | Finding | Green                                                                          |
+|---------|--------------------------------------------------------------------------------|
+| Reason  | A privileged local group is having a member added to it. Might be interesting, |
+|         | hard to say.                                                                   |
+| Detail  | Group Administrators is having l0ss added to it.                               |
+
+
+2026-09-25 12:09:38 +02:00 [Info] Finished at 9/25/2026 12:09:38 PM
+2026-09-25 12:09:38 +02:00 [Info] Group3rin' took 00:00:01.0707350
+2026-09-25 12:09:38 +02:00 [Finish] 

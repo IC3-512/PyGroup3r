@@ -1,0 +1,670 @@
+{
+  "metadata": {
+    "tool": "group3rpy",
+    "generated": "2026-09-28T11:51:44+00:00",
+    "domain": "contoso.local",
+    "sourceKind": "GroupPolicy",
+    "schemaNote": "Shaped after BloodHound CE's OpenGraph generic-ingest payload, but the exact schema is UNVERIFIED against any specific BloodHound version. Node ids are objectid/SID where known, otherwise a distinguishedName, otherwise a bare name; each node carries group3rpyMatchBy naming the property its id should be matched on.",
+    "derivedEdgeKinds": [
+      "AdminTo",
+      "CanRDP",
+      "CanPSRemote",
+      "GPOLocalGroupMember",
+      "GPOGrantsPrivilege",
+      "GPOServiceAccount",
+      "GPOScheduledTaskPrincipal"
+    ],
+    "customEdgeKinds": [
+      "GPOLocalGroupMember",
+      "GPOGrantsPrivilege",
+      "GPOServiceAccount",
+      "GPOScheduledTaskPrincipal"
+    ],
+    "uncertainEdgeNote": "An edge with uncertain = true comes from a GPO narrowed by security filtering or a WMI filter, so it may reach fewer computers than listed. See its reason property.",
+    "edgeCounts": {
+      "AdminTo": 8,
+      "GPOGrantsPrivilege": 10,
+      "GPOScheduledTaskPrincipal": 8,
+      "GPOServiceAccount": 2
+    },
+    "gpos": [
+      {
+        "guid": "{5E71B3A9-C820-4D77-8F16-4B9E2C61A005}",
+        "displayName": "SQL Service Configuration",
+        "affectedComputers": 2,
+        "uncertain": false,
+        "reason": null,
+        "notes": []
+      },
+      {
+        "guid": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "displayName": "Server Maintenance Tasks",
+        "affectedComputers": 4,
+        "uncertain": false,
+        "reason": null,
+        "notes": []
+      },
+      {
+        "guid": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "displayName": "Default Domain Controllers Policy",
+        "affectedComputers": 2,
+        "uncertain": false,
+        "reason": null,
+        "notes": []
+      },
+      {
+        "guid": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "displayName": "Local Administrator Provisioning",
+        "affectedComputers": 4,
+        "uncertain": false,
+        "reason": null,
+        "notes": []
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "DC01.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "DC02.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=SQL-01,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=SQL-01,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "SQL-01.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=SQL-02,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=SQL-02,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "SQL-02.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WEB-01,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WEB-01,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WEB-01.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WEB-02,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WEB-02,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WEB-02.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WS-ENG-01,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WS-ENG-01,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WS-ENG-01.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WS-ENG-02,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WS-ENG-02,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WS-ENG-02.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WS-ENG-03,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WS-ENG-03,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WS-ENG-03.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CN=WS-ENG-04,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kinds": [
+        "Computer",
+        "Base"
+      ],
+      "properties": {
+        "distinguishedname": "CN=WS-ENG-04,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+        "group3rpyMatchBy": "distinguishedname",
+        "name": "WS-ENG-04.CONTOSO.LOCAL"
+      }
+    },
+    {
+      "id": "CONTOSO\\SVC_BACKUP",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "name": "CONTOSO\\SVC_BACKUP",
+        "group3rpyMatchBy": "name",
+        "samaccountname": "SVC_BACKUP",
+        "group3rpyNetbios": "CONTOSO"
+      }
+    },
+    {
+      "id": "CONTOSO\\SVC_INVENTORY",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "name": "CONTOSO\\SVC_INVENTORY",
+        "group3rpyMatchBy": "name",
+        "samaccountname": "SVC_INVENTORY",
+        "group3rpyNetbios": "CONTOSO"
+      }
+    },
+    {
+      "id": "CONTOSO\\SVC_SQL",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "name": "CONTOSO\\SVC_SQL",
+        "group3rpyMatchBy": "name",
+        "samaccountname": "SVC_SQL",
+        "group3rpyNetbios": "CONTOSO"
+      }
+    },
+    {
+      "id": "S-1-1-0",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "objectid": "S-1-1-0",
+        "group3rpyMatchBy": "objectid",
+        "name": "EVERYONE"
+      }
+    },
+    {
+      "id": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "objectid": "S-1-5-21-1004336348-1177238915-682003330-1134",
+        "group3rpyMatchBy": "objectid",
+        "name": "FAILED SID RESOLUTION"
+      }
+    },
+    {
+      "id": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "objectid": "S-1-5-21-1004336348-1177238915-682003330-513",
+        "group3rpyMatchBy": "objectid",
+        "name": "DOMAIN USERS"
+      }
+    },
+    {
+      "id": "S-1-5-32-544",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "objectid": "S-1-5-32-544",
+        "group3rpyMatchBy": "objectid",
+        "name": "ADMINISTRATORS"
+      }
+    },
+    {
+      "id": "S-1-5-32-551",
+      "kinds": [
+        "Base"
+      ],
+      "properties": {
+        "objectid": "S-1-5-32-551",
+        "group3rpyMatchBy": "objectid",
+        "name": "BACKUP OPERATORS"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=WS-ENG-01,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=WS-ENG-02,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=WS-ENG-03,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=WS-ENG-04,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=WS-ENG-01,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=WS-ENG-02,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=WS-ENG-03,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=WS-ENG-04,OU=ENGINEERING,OU=WORKSTATIONS,DC=CONTOSO,DC=LOCAL",
+      "kind": "AdminTo",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}",
+        "gpoDisplayName": "Local Administrator Provisioning",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003}\\Machine\\Preferences\\Groups\\Groups.xml",
+        "localGroup": "Administrators",
+        "localGroupSid": "S-1-5-32-544"
+      }
+    },
+    {
+      "start": "S-1-1-0",
+      "end": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeDebugPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Debug programs"
+      }
+    },
+    {
+      "start": "S-1-1-0",
+      "end": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeDebugPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Debug programs"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeTakeOwnershipPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Take ownership of files or other objects"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-1134",
+      "end": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeTakeOwnershipPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Take ownership of files or other objects"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeRemoteInteractiveLogonRight",
+        "grantsRemoteAccess": true,
+        "msDescription": "Allow log on through Remote Desktop Services"
+      }
+    },
+    {
+      "start": "S-1-5-21-1004336348-1177238915-682003330-513",
+      "end": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeRemoteInteractiveLogonRight",
+        "grantsRemoteAccess": true,
+        "msDescription": "Allow log on through Remote Desktop Services"
+      }
+    },
+    {
+      "start": "S-1-5-32-544",
+      "end": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeTakeOwnershipPrivilege | SeBackupPrivilege | SeRestorePrivilege | SeRemoteInteractiveLogonRight | SeLoadDriverPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Take ownership of files or other objects | Back up files and directories | Restore files and directories | Allow log on through Remote Desktop Services | Load and unload device drivers",
+        "grantsRemoteAccess": true
+      }
+    },
+    {
+      "start": "S-1-5-32-544",
+      "end": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeTakeOwnershipPrivilege | SeBackupPrivilege | SeRestorePrivilege | SeRemoteInteractiveLogonRight | SeLoadDriverPrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Take ownership of files or other objects | Back up files and directories | Restore files and directories | Allow log on through Remote Desktop Services | Load and unload device drivers",
+        "grantsRemoteAccess": true
+      }
+    },
+    {
+      "start": "S-1-5-32-551",
+      "end": "CN=DC01,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeBackupPrivilege | SeRestorePrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Back up files and directories | Restore files and directories"
+      }
+    },
+    {
+      "start": "S-1-5-32-551",
+      "end": "CN=DC02,OU=DOMAIN CONTROLLERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOGrantsPrivilege",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{6AC1786C-016F-11D2-945F-00C04FB984F9}",
+        "gpoDisplayName": "Default Domain Controllers Policy",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{6AC1786C-016F-11D2-945F-00C04FB984F9}\\Machine\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf",
+        "privilege": "SeBackupPrivilege | SeRestorePrivilege",
+        "adminEquivalent": true,
+        "msDescription": "Back up files and directories | Restore files and directories"
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_BACKUP",
+      "end": "CN=SQL-01,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Nightly Backup",
+        "logonType": "password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_BACKUP",
+      "end": "CN=SQL-02,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Nightly Backup",
+        "logonType": "password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_BACKUP",
+      "end": "CN=WEB-01,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Nightly Backup",
+        "logonType": "password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_BACKUP",
+      "end": "CN=WEB-02,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Nightly Backup",
+        "logonType": "password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_INVENTORY",
+      "end": "CN=SQL-01,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Inventory Sync",
+        "runLevel": "HighestAvailable",
+        "logonType": "Password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_INVENTORY",
+      "end": "CN=SQL-02,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Inventory Sync",
+        "runLevel": "HighestAvailable",
+        "logonType": "Password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_INVENTORY",
+      "end": "CN=WEB-01,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Inventory Sync",
+        "runLevel": "HighestAvailable",
+        "logonType": "Password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_INVENTORY",
+      "end": "CN=WEB-02,OU=WEB,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOScheduledTaskPrincipal",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}",
+        "gpoDisplayName": "Server Maintenance Tasks",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004}\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml",
+        "taskName": "Inventory Sync",
+        "runLevel": "HighestAvailable",
+        "logonType": "Password",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_SQL",
+      "end": "CN=SQL-01,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOServiceAccount",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{5E71B3A9-C820-4D77-8F16-4B9E2C61A005}",
+        "gpoDisplayName": "SQL Service Configuration",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{5E71B3A9-C820-4D77-8F16-4B9E2C61A005}\\Machine\\Preferences\\Services\\Services.xml",
+        "serviceName": "MSSQLSERVER",
+        "startupType": "AUTOMATIC",
+        "gppPasswordRecovered": true
+      }
+    },
+    {
+      "start": "CONTOSO\\SVC_SQL",
+      "end": "CN=SQL-02,OU=SQL,OU=SERVERS,DC=CONTOSO,DC=LOCAL",
+      "kind": "GPOServiceAccount",
+      "properties": {
+        "source": "group3rpy",
+        "gpo": "{5E71B3A9-C820-4D77-8F16-4B9E2C61A005}",
+        "gpoDisplayName": "SQL Service Configuration",
+        "settingSource": "\\\\contoso.local\\sysvol\\contoso.local\\Policies\\{5E71B3A9-C820-4D77-8F16-4B9E2C61A005}\\Machine\\Preferences\\Services\\Services.xml",
+        "serviceName": "MSSQLSERVER",
+        "startupType": "AUTOMATIC",
+        "gppPasswordRecovered": true
+      }
+    }
+  ]
+}

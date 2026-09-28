@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Group3r — __GROUP3R_TITLE__</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f8;
+    --panel: #ffffff;
+    --panel-2: #f0f0f2;
+    --border: #d8d8de;
+    --text: #1a1a1f;
+    --muted: #61616b;
+    --accent: #2f6feb;
+    --accent-soft: #e4ecfd;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --black: #0b0b0e;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --row-h: 34px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16161a;
+      --panel: #1e1e24;
+      --panel-2: #26262e;
+      --border: #33333d;
+      --text: #e8e8ed;
+      --muted: #9a9aa6;
+      --accent: #6b9bff;
+      --accent-soft: #23304d;
+      --green: #4ac26b;
+      --yellow: #e3b341;
+      --red: #ff6b74;
+      --black: #f2f2f7;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 9px 14px; background: var(--panel);
+    border-bottom: 1px solid var(--border); flex: none;
+  }
+  .brand { font-weight: 650; letter-spacing: .3px; }
+  .brand span { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 12px; }
+  .pills { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+  .pill {
+    padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    border: 1px solid transparent; cursor: pointer; user-select: none;
+    background: var(--panel-2); color: var(--muted);
+  }
+  .pill.on { border-color: currentColor; }
+  .pill[data-t="Black"].on { color: var(--black); background: color-mix(in srgb, var(--black) 14%, transparent); }
+  .pill[data-t="Red"].on { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+  .pill[data-t="Yellow"].on { color: var(--yellow); background: color-mix(in srgb, var(--yellow) 16%, transparent); }
+  .pill[data-t="Green"].on { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .pill[data-t="None"].on { color: var(--muted); background: var(--panel-2); border-color: var(--border); }
+
+  /* ---------- search bar ---------- */
+  .searchbar {
+    display: flex; gap: 8px; align-items: center; padding: 8px 14px;
+    background: var(--panel); border-bottom: 1px solid var(--border); flex: none;
+  }
+  #q {
+    flex: 1; min-width: 180px; padding: 7px 10px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+    font: 13px var(--mono);
+  }
+  #q:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  .btn {
+    padding: 7px 11px; border-radius: 7px; border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text); cursor: pointer; font-size: 12px;
+    font-weight: 550; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .count { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .count b { color: var(--text); }
+
+  /* ---------- layout ---------- */
+  main { flex: 1; display: flex; min-height: 0; }
+  aside {
+    width: 262px; flex: none; background: var(--panel); overflow-y: auto;
+    border-right: 1px solid var(--border); padding: 4px 0 20px;
+  }
+  .facet h3 {
+    margin: 0; padding: 10px 14px 6px; font-size: 11px; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .facet label {
+    display: flex; align-items: center; gap: 8px; padding: 3px 14px;
+    cursor: pointer; font-size: 12px;
+  }
+  .facet label:hover { background: var(--panel-2); }
+  .facet label span.n { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .facet input { accent-color: var(--accent); }
+  .facet .scroll { max-height: 260px; overflow-y: auto; }
+  .facet .tools { padding: 2px 14px 6px; display: flex; gap: 8px; }
+  .facet .tools a { color: var(--accent); font-size: 11px; cursor: pointer; text-decoration: none; }
+
+  .results { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .thead {
+    display: flex; flex: none; background: var(--panel-2); border-bottom: 1px solid var(--border);
+    font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+  }
+  .thead > div { padding: 7px 8px; cursor: pointer; user-select: none; }
+  .thead > div:hover { color: var(--text); }
+  #scroller { flex: 1; overflow: auto; position: relative; }
+  #sizer { position: relative; width: 100%; }
+  .row {
+    display: flex; position: absolute; left: 0; right: 0; height: var(--row-h);
+    align-items: center; border-bottom: 1px solid var(--border); cursor: pointer;
+    font-size: 12px;
+  }
+  .row:hover { background: var(--accent-soft); }
+  .row.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .row > div, .thead > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
+  .c-tri { width: 78px; flex: none; font-weight: 700; font-size: 11px; }
+  .c-gpo { width: 210px; flex: none; }
+  .c-type { width: 150px; flex: none; color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .c-pol { width: 74px; flex: none; color: var(--muted); }
+  .c-reach { width: 76px; flex: none; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .c-reach.hot { color: var(--red); font-weight: 700; }
+  .c-reach.none { color: var(--muted); opacity: .55; }
+  .c-reason { flex: 1; min-width: 100px; }
+  .t-Black { color: var(--black); font-weight: 700; } .t-Red { color: var(--red); }
+  .t-Yellow { color: var(--yellow); } .t-Green { color: var(--green); }
+  .t-None { color: var(--muted); font-weight: 500; }
+  mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: inherit; border-radius: 2px; }
+
+  /* ---------- detail ---------- */
+  #detail {
+    width: 440px; flex: none; background: var(--panel); border-left: 1px solid var(--border);
+    overflow-y: auto; padding: 0 0 30px;
+  }
+  #detail.hide { display: none; }
+  .dhead { position: sticky; top: 0; background: var(--panel); border-bottom: 1px solid var(--border); padding: 11px 14px; }
+  .dhead .x { float: right; cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; }
+  .dsec { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .dsec h4 { margin: 0 0 7px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .kv { display: grid; grid-template-columns: minmax(90px, 38%) 1fr; gap: 3px 10px; font-size: 12px; }
+  .kv .k { color: var(--muted); font-family: var(--mono); font-size: 11px; word-break: break-all; }
+  .kv .v { font-family: var(--mono); font-size: 11px; word-break: break-all; white-space: pre-wrap; }
+  .prose { font-size: 12px; white-space: pre-wrap; }
+  .dsec.help { background: color-mix(in srgb, var(--accent, #0969da) 5%, transparent); }
+  .dsec.help > h4 { color: var(--fg); font-size: 12px; text-transform: none; letter-spacing: 0; }
+  .dsec.help .hq { font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
+                   color: var(--muted); margin: 8px 0 2px; font-weight: 600; }
+  .dsec.help .prose { margin: 0; }
+  .aclwarn { font-size: 11px; color: var(--red); margin-bottom: 6px; font-weight: 600; }
+  table.acl tr.risky td { background: color-mix(in srgb, var(--red) 9%, transparent); }
+  .rflag { color: var(--red); font-weight: 700; }
+  table.acl { width: 100%; border-collapse: collapse; font-size: 11px; font-family: var(--mono); }
+  /* `overflow-wrap: anywhere` breaks only when a line genuinely does not fit,
+     where `word-break: break-all` breaks greedily -- which shredded the narrow
+     Trustee/Type columns into one character per line whenever the Rights column
+     held a long comma list. */
+  table.acl th, table.acl td { text-align: left; padding: 3px 5px; border-bottom: 1px solid var(--border); vertical-align: top; overflow-wrap: anywhere; }
+  table.acl th:nth-child(2), table.acl td:nth-child(2) { white-space: nowrap; width: 1%; }
+  table.acl th { color: var(--muted); font-weight: 600; }
+  .deny { color: var(--red); }
+  .flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+  .flag { font-size: 10px; padding: 1px 6px; border-radius: 4px; background: var(--panel-2); color: var(--muted); font-family: var(--mono); }
+  .flag.hot { background: color-mix(in srgb, var(--red) 18%, transparent); color: var(--red); font-weight: 700; }
+
+  /* ---------- misc ---------- */
+  #loading { position: fixed; inset: 0; display: grid; place-items: center; background: var(--bg); z-index: 9; }
+  #loading div { text-align: center; color: var(--muted); }
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+  .hint { font-size: 11px; color: var(--muted); padding: 6px 14px 0; }
+  .hint code { background: var(--panel-2); padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+  @media (max-width: 900px) {
+    aside { display: none; }
+    #detail { position: fixed; inset: 0; width: auto; z-index: 8; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading"><div><b>Decompressing report…</b><br><span id="loadnote"></span></div></div>
+
+<header>
+  <div class="brand">Group<span>3</span>r</div>
+  <div class="meta" id="metaline"></div>
+  <div class="pills" id="triagePills"></div>
+</header>
+
+<div class="searchbar">
+  <input id="q" type="search" spellcheck="false" placeholder="Search everything…  try: cpassword   |   trustee:&quot;Domain Users&quot;   |   computer:SRV01   |   type:SchedTask -Green">
+  <button class="btn" id="btnCsv">Export CSV</button>
+  <button class="btn" id="btnJson">Export JSON</button>
+  <button class="btn" id="btnReset">Reset</button>
+  <div class="count" id="countline"></div>
+</div>
+<div class="hint">
+  <code>term</code> all terms must match ·
+  <code>"exact phrase"</code> ·
+  <code>-exclude</code> ·
+  <code>field:value</code> where field is gpo, type, reason, detail, source, path, trustee, right, key, value, computer, container ·
+  <kbd>/</kbd> search · <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>Esc</kbd> close
+</div>
+
+<main>
+  <aside id="facets"></aside>
+  <div class="results">
+    <div class="thead">
+      <div class="c-tri" data-sort="triage">Triage</div>
+      <div class="c-gpo" data-sort="gpo">GPO</div>
+      <div class="c-type" data-sort="type">Setting type</div>
+      <div class="c-pol" data-sort="policy">Policy</div>
+      <div class="c-reach" data-sort="reach" title="Computers this GPO applies to">Reach</div>
+      <div class="c-reason" data-sort="reason">Finding</div>
+    </div>
+    <div id="scroller"><div id="sizer"></div></div>
+  </div>
+  <div id="detail" class="hide"></div>
+</main>
+
+<script id="payload" type="application/octet-stream">__GROUP3R_DATA__</script>
+<script>
+"use strict";
+
+const TRIAGE = ["Green", "Yellow", "Red", "Black"];
+const POLICY = ["Computer", "User", "Package", "—"];
+const RAW_BYTES = __GROUP3R_RAW_BYTES__;
+
+let D = null;            // payload
+let S = null;            // interned strings
+let SL = null;           // lowercased strings
+let TYPES = null, TYPESL = null;
+let SC = null;                 // per-GPO serialised scope, or null when unresolved
+let N = 0;               // total rows
+let view = [];           // filtered + sorted row indices
+let selected = -1;
+let sortKey = "triage", sortDir = -1;
+
+const state = {
+  triage: new Set(["Green", "Yellow", "Red", "Black", "None"]),
+  types: null,           // null = all
+  policies: new Set([0, 1, 2, 3]),
+  gpos: null,            // null = all
+  query: "",
+  reach: null,           // null = all reach buckets
+  requireFlags: new Set(),   // "enforced" | "filtered" | "wmi"
+};
+
+/* ----------------------------------------------------------- load + inflate */
+
+async function boot() {
+  const note = document.getElementById("loadnote");
+  const b64 = document.getElementById("payload").textContent.trim();
+  note.textContent = "decoding " + fmtBytes(b64.length) + " …";
+
+  const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  let text;
+  if (typeof DecompressionStream === "function") {
+    const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"));
+    text = await new Response(stream).text();
+  } else {
+    document.getElementById("loading").innerHTML =
+      "<div>This browser lacks <code>DecompressionStream</code>. Please open the report in a current version of Firefox, Chrome, Edge or Safari.</div>";
+    return;
+  }
+  note.textContent = "parsing " + fmtBytes(text.length) + " …";
+  D = JSON.parse(text);
+  S = D.strings;
+  SL = S.map(s => s.toLowerCase());
+  TYPES = D.settingTypes;
+  TYPESL = TYPES.map(s => s.toLowerCase());
+  SC = D.scopes || [];
+  N = D.findings.gpo.length;
+
+  buildHeader();
+  buildFacets();
+  wire();
+  apply();
+  document.getElementById("loading").remove();
+}
+
+/* ------------------------------------------------------------------ helpers */
+
+function fmtBytes(n) {
+  const u = ["B", "kB", "MB", "GB"];
+  let i = 0;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return (i ? n.toFixed(1) : n) + " " + u[i];
+}
+// Scope accessors. A scope row is:
+// [count, orphaned, allLinksDisabled, enforced, filteredNarrowed, wmiIdx,
+//  [computerIdx], [noteIdx], [[containerIdx, statusIdx]], [filterPrincipalIdx],
+//  userCount]
+const scopeOf = r => (SC && SC.length ? SC[D.findings.gpo[r]] : null) || null;
+const REACH_BUCKETS = ["orphaned", "disabled", "zero", "1-10", "11-100", "101-1000", "1000+"];
+function reachBucket(r) {
+  const sc = scopeOf(r);
+  if (!sc) return "unresolved";
+  if (sc[1]) return "orphaned";
+  if (sc[2]) return "disabled";
+  const n = sc[0];
+  if (n === 0) return "zero";
+  if (n <= 10) return "1-10";
+  if (n <= 100) return "11-100";
+  if (n <= 1000) return "101-1000";
+  return "1000+";
+}
+function reachCount(r) { const sc = scopeOf(r); return sc ? sc[0] : -1; }
+function hasFlag(r, flag) {
+  const sc = scopeOf(r);
+  if (!sc) return false;
+  if (flag === "enforced") return !!sc[3];
+  if (flag === "filtered") return !!sc[4];
+  if (flag === "wmi") return !!sc[5];
+  return false;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const triageName = v => (v < 0 ? "None" : TRIAGE[v]);
+const gpoName = r => S[D.gpos[D.findings.gpo[r]][0]] || S[D.gpos[D.findings.gpo[r]][1]] || "(unnamed GPO)";
+
+function buildHeader() {
+  const m = D.meta;
+  document.getElementById("metaline").textContent =
+    [m.domain || "offline", m.gpoCount.toLocaleString() + " GPOs",
+     m.findingCount.toLocaleString() + " findings",
+     m.rowCount.toLocaleString() + " rows",
+     "generated " + m.generated].filter(Boolean).join("  ·  ");
+
+  const counts = { ...m.triageCounts, None: m.rowCount - m.findingCount };
+  document.getElementById("triagePills").innerHTML =
+    ["Black", "Red", "Yellow", "Green", "None"].map(t =>
+      `<div class="pill on" data-t="${t}">${t} ${(counts[t] || 0).toLocaleString()}</div>`).join("");
+}
+
+/* ------------------------------------------------------------------- facets */
+
+function buildFacets() {
+  const f = D.findings;
+
+  // setting-type facet
+  const typeCounts = new Map();
+  for (let i = 0; i < N; i++) typeCounts.set(f.type[i], (typeCounts.get(f.type[i]) || 0) + 1);
+  const typeRows = [...typeCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+  // GPO facet
+  const gpoCounts = new Map();
+  for (let i = 0; i < N; i++) gpoCounts.set(f.gpo[i], (gpoCounts.get(f.gpo[i]) || 0) + 1);
+  const gpoRows = [...gpoCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([gi, c]) => [gi, c, S[D.gpos[gi][0]] || S[D.gpos[gi][1]] || "(unnamed)"]);
+
+  const scopeResolved = !!(D.meta && D.meta.scopeResolved);
+  const reachCounts = new Map();
+  if (scopeResolved) {
+    for (let i = 0; i < N; i++) {
+      const b = reachBucket(i);
+      reachCounts.set(b, (reachCounts.get(b) || 0) + 1);
+    }
+  }
+  const reachFacet = !scopeResolved ? "" : `
+    <div class="facet">
+      <h3>Reach (computers)</h3>
+      <div class="tools"><a data-all="reach">all</a><a data-none="reach">none</a></div>
+      ${["1000+", "101-1000", "11-100", "1-10", "zero", "disabled", "orphaned", "unresolved"]
+        .filter(b => reachCounts.get(b))
+        .map(b => `<label><input type="checkbox" data-reach="${b}" checked>
+          ${b === "orphaned" ? "not linked" : b === "disabled" ? "links disabled"
+            : b === "zero" ? "0 computers" : b === "unresolved" ? "unresolved" : b}
+          <span class="n">${(reachCounts.get(b) || 0).toLocaleString()}</span></label>`).join("")}
+    </div>
+    <div class="facet">
+      <h3>Only show</h3>
+      <label><input type="checkbox" data-flag="enforced"> enforced links<span class="n"></span></label>
+      <label><input type="checkbox" data-flag="filtered"> security-filtered<span class="n"></span></label>
+      <label><input type="checkbox" data-flag="wmi"> WMI-filtered<span class="n"></span></label>
+    </div>`;
+
+  document.getElementById("facets").innerHTML = `
+    ${reachFacet}
+    <div class="facet">
+      <h3>Finding type</h3>
+      <div class="tools"><a data-all="types">all</a><a data-none="types">none</a></div>
+      <div class="scroll" id="fType">
+        ${typeRows.map(([ti, c]) => `<label><input type="checkbox" data-type="${ti}" checked>
+          ${esc(TYPES[ti])}<span class="n">${c.toLocaleString()}</span></label>`).join("")}
+      </div>
+    </div>
+    <div class="facet">
+      <h3>Policy scope</h3>
+      ${[0, 1, 2, 3].map(p => `<label><input type="checkbox" data-pol="${p}" checked>
+        ${POLICY[p]}<span class="n" id="polN${p}"></span></label>`).join("")}
+    </div>
+    <div class="facet">
+      <h3>GPO <span class="n"></span></h3>
+      <div class="tools"><a data-all="gpos">all</a><a data-none="gpos">none</a></div>
+      <input id="gpoFilter" placeholder="filter GPO list…"
+             style="margin:2px 14px 6px;width:calc(100% - 28px);padding:5px 7px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:11px">
+      <div class="scroll" id="fGpo">
+        ${gpoRows.map(([gi, c, name]) => `<label data-name="${esc(name.toLowerCase())}">
+          <input type="checkbox" data-gpo="${gi}" checked>${esc(name)}<span class="n">${c.toLocaleString()}</span></label>`).join("")}
+      </div>
+    </div>`;
+}
+
+/* -------------------------------------------------------------- query model */
+
+function parseQuery(raw) {
+  const clauses = [];
+  const re = /(-?)(?:([a-z]+):)?(?:"([^"]*)"|(\S+))/gi;
+  let m;
+  while ((m = re.exec(raw)) !== null) {
+    const text = (m[3] !== undefined ? m[3] : m[4] || "").toLowerCase();
+    if (!text) continue;
+    clauses.push({ neg: m[1] === "-", field: (m[2] || "any").toLowerCase(), text });
+  }
+  // Precompute, per clause, which dictionary entries match. This is the whole
+  // trick: the vocabulary is small, so search never scales with row count.
+  for (const c of clauses) {
+    const set = new Uint8Array(S.length);
+    for (let i = 0; i < SL.length; i++) if (SL[i].includes(c.text)) set[i] = 1;
+    c.set = set;
+    c.typeHits = new Uint8Array(TYPES.length);
+    for (let i = 0; i < TYPESL.length; i++) if (TYPESL[i].includes(c.text)) c.typeHits[i] = 1;
+  }
+  return clauses;
+}
+
+function clauseHit(r, c) {
+  const f = D.findings, set = c.set;
+  switch (c.field) {
+    case "gpo": {
+      const g = D.gpos[f.gpo[r]];
+      return !!(set[g[0]] || set[g[1]] || set[g[2]] || set[g[3]]);
+    }
+    case "type":   return !!c.typeHits[f.type[r]];
+    case "reason": return !!set[f.reason[r]];
+    case "detail": return !!set[f.detail[r]];
+    case "source": return !!set[f.source[r]];
+    case "path":   return f.paths[r].some(p => set[p[0]]);
+    case "trustee":return f.aces[r].some(a => set[a[0]] || set[a[1]]);
+    case "right":  return f.aces[r].some(a => set[a[3]]);
+    case "computer": {
+      const sc = scopeOf(r);
+      return !!sc && sc[6].some(i => set[i]);
+    }
+    case "container": {
+      const sc = scopeOf(r);
+      return !!sc && sc[8].some(l => set[l[0]]);
+    }
+    case "key":    return f.fields[r].some(kv => set[kv[0]]);
+    case "value":  return f.fields[r].some(kv => set[kv[1]]);
+    default: {
+      if (set[f.reason[r]] || set[f.detail[r]] || set[f.source[r]]) return true;
+      if (c.typeHits[f.type[r]]) return true;
+      const g = D.gpos[f.gpo[r]];
+      if (set[g[0]] || set[g[1]] || set[g[2]] || set[g[3]]) return true;
+      const kvs = f.fields[r];
+      for (let i = 0; i < kvs.length; i++) if (set[kvs[i][0]] || set[kvs[i][1]]) return true;
+      const aces = f.aces[r];
+      for (let i = 0; i < aces.length; i++) {
+        const a = aces[i];
+        if (set[a[0]] || set[a[1]] || set[a[3]]) return true;
+      }
+      const ps = f.paths[r];
+      for (let i = 0; i < ps.length; i++) if (set[ps[i][0]] || set[ps[i][5]]) return true;
+      const sc = scopeOf(r);
+      if (sc) {
+        for (let i = 0; i < sc[6].length; i++) if (set[sc[6][i]]) return true;
+        for (let i = 0; i < sc[8].length; i++) if (set[sc[8][i][0]]) return true;
+      }
+      return false;
+    }
+  }
+}
+
+/* ------------------------------------------------------------ filter + sort */
+
+function apply() {
+  const f = D.findings;
+  const clauses = state.query ? parseQuery(state.query) : [];
+  const wantTypes = state.types, wantGpos = state.gpos;
+  const out = [];
+
+  for (let r = 0; r < N; r++) {
+    if (!state.triage.has(triageName(f.triage[r]))) continue;
+    if (!state.policies.has(f.policy[r])) continue;
+    if (wantTypes && !wantTypes.has(f.type[r])) continue;
+    if (wantGpos && !wantGpos.has(f.gpo[r])) continue;
+    if (state.reach && !state.reach.has(reachBucket(r))) continue;
+    if (state.requireFlags.size) {
+      let ok = true;
+      for (const flag of state.requireFlags) if (!hasFlag(r, flag)) { ok = false; break; }
+      if (!ok) continue;
+    }
+    let ok = true;
+    for (let i = 0; i < clauses.length; i++) {
+      const c = clauses[i];
+      if (clauseHit(r, c) === c.neg) { ok = false; break; }
+    }
+    if (ok) out.push(r);
+  }
+
+  view = out;
+  sortView();
+  document.getElementById("countline").innerHTML =
+    `<b>${view.length.toLocaleString()}</b> of ${N.toLocaleString()} rows`;
+  for (let p = 0; p < 4; p++) {
+    const el = document.getElementById("polN" + p);
+    if (el) el.textContent = "";
+  }
+  selected = -1;
+  document.getElementById("detail").classList.add("hide");
+  render(true);
+}
+
+function sortView() {
+  const f = D.findings, d = sortDir;
+  const key =
+    sortKey === "triage" ? (r => f.triage[r]) :
+    sortKey === "type"   ? (r => TYPESL[f.type[r]]) :
+    sortKey === "policy" ? (r => f.policy[r]) :
+    sortKey === "reach"  ? (r => reachCount(r)) :
+    sortKey === "reason" ? (r => SL[f.reason[r]]) :
+                           (r => (SL[D.gpos[f.gpo[r]][0]] || SL[D.gpos[f.gpo[r]][1]] || ""));
+  view.sort((a, b) => {
+    const ka = key(a), kb = key(b);
+    if (ka < kb) return -d;
+    if (ka > kb) return d;
+    return a - b;
+  });
+}
+
+/* ------------------------------------------------------- virtualised render */
+
+const scroller = document.getElementById("scroller");
+const sizer = document.getElementById("sizer");
+let rowH = 34, lastFirst = -1;
+
+function render(force) {
+  const total = view.length;
+  sizer.style.height = (total * rowH) + "px";
+  if (!total) {
+    sizer.innerHTML = `<div class="empty">No rows match these filters.</div>`;
+    return;
+  }
+  const vh = scroller.clientHeight;
+  const first = Math.max(0, Math.floor(scroller.scrollTop / rowH) - 8);
+  const count = Math.ceil(vh / rowH) + 16;
+  if (!force && first === lastFirst) return;
+  lastFirst = first;
+
+  const f = D.findings;
+  const parts = [];
+  for (let i = first; i < Math.min(total, first + count); i++) {
+    const r = view[i];
+    const t = triageName(f.triage[r]);
+    parts.push(
+      `<div class="row${i === selected ? " sel" : ""}" style="top:${i * rowH}px" data-i="${i}">` +
+      `<div class="c-tri t-${t}">${t}</div>` +
+      `<div class="c-gpo" title="${esc(gpoName(r))}">${esc(gpoName(r))}</div>` +
+      `<div class="c-type">${esc(TYPES[f.type[r]])}</div>` +
+      `<div class="c-pol">${POLICY[f.policy[r]]}</div>` +
+      renderReach(r) +
+      `<div class="c-reason" title="${esc(S[f.reason[r]] || "")}">${esc(S[f.reason[r]] || "—")}</div>` +
+      `</div>`);
+  }
+  sizer.innerHTML = parts.join("");
+}
+
+function renderReach(r) {
+  const sc = scopeOf(r);
+  if (!sc) return `<div class="c-reach none" title="scope not resolved">&mdash;</div>`;
+  if (sc[1]) return `<div class="c-reach none" title="not linked to any container">none</div>`;
+  if (sc[2]) return `<div class="c-reach none" title="all links disabled">off</div>`;
+  const n = sc[0];
+  const cls = n > 100 ? "c-reach hot" : "c-reach";
+  const marks = (sc[4] ? "\u2022" : "") + (sc[5] ? "\u2022" : "");
+  const title = n.toLocaleString() + " computer(s)"
+    + (sc[4] ? " \u00b7 security-filtered, may be narrower" : "")
+    + (sc[5] ? " \u00b7 WMI-filtered, may be narrower" : "");
+  return `<div class="${cls}" title="${title}">${n.toLocaleString()}${marks}</div>`;
+}
+
+/* ---------------------------------------------------------------- detail UI */
+
+function showDetail(i) {
+  selected = i;
+  const r = view[i], f = D.findings, g = D.gpos[f.gpo[r]];
+  const t = triageName(f.triage[r]);
+  const pane = document.getElementById("detail");
+
+  const links = g[10].length
+    ? `<div class="kv">${g[10].map(l => `<div class="k">${esc(S[l[0]])}</div><div class="v">${esc(S[l[1]])}</div>`).join("")}</div>`
+    : `<div class="prose" style="color:var(--muted)">No links recorded.</div>`;
+
+  const kvs = f.fields[r];
+  const settingBlock = kvs.length
+    ? `<div class="kv">${kvs.map(kv => `<div class="k">${esc(S[kv[0]])}</div><div class="v">${esc(S[kv[1]])}</div>`).join("")}</div>`
+    : `<div class="prose" style="color:var(--muted)">No setting fields.</div>`;
+
+  const aces = f.aces[r];
+  // PORT ADDITION: flag ACEs that hand write-equivalent control to a principal
+  // that is not already domain-privileged -- those are the ones worth reading.
+  const RISKY_RIGHTS = ["WRITE_DAC","WRITE_OWNER","GENERIC_ALL","GENERIC_WRITE",
+    "ALL_ACCESS","CREATE_CHILD","DELETE_CHILD","DELETE_TREE","WRITE_PROPERTY",
+    "SELF_WRITE","STANDARD_DELETE","KEY_WRITE","KEY_ALL","SET_VALUE","FILE_ALL",
+    "WRITE_DATA","APPEND_DATA","ADD_FILE","ADD_SUBDIRECTORY","Owner"];
+  const PRIVILEGED = ["domain admins","enterprise admins","administrators",
+    "local system","system","creator owner","domain controllers",
+    "enterprise domain controllers","self"];
+  const aceRisky = a => {
+    const who = (S[a[0]] || "").toLowerCase().trim();
+    if (S[a[2]] === "Deny") return false;
+    if (PRIVILEGED.some(p => who === p || who.endsWith("\\" + p))) return false;
+    const rights = S[a[3]] || "";
+    return RISKY_RIGHTS.some(x => rights.split(/,\s*/).includes(x));
+  };
+  const riskyCount = aces.filter(aceRisky).length;
+  const aclBlock = aces.length ? `${riskyCount ? `<div class="aclwarn">${riskyCount} ACE${riskyCount > 1 ? "s give" : " gives"} write-equivalent control to a non-privileged principal</div>` : ""}<table class="acl">
+      <tr><th>Trustee</th><th>Type</th><th>Rights</th></tr>
+      ${aces.map(a => `<tr class="${aceRisky(a) ? "risky" : ""}"><td>${esc(S[a[0]] || S[a[1]] || "?")}${aceRisky(a) ? ` <span class="rflag">!</span>` : ""}${S[a[1]] ? `<br><span style="color:var(--muted)">${esc(S[a[1]])}</span>` : ""}</td>
+        <td class="${S[a[2]] === "Deny" ? "deny" : ""}">${esc(S[a[2]] || "")}</td>
+        <td>${esc(S[a[3]] || "")}</td></tr>`).join("")}
+    </table>` : "";
+
+  const paths = f.paths[r];
+  const pathBlock = paths.length ? paths.map(p => {
+    const flags = [];
+    if (p[1]) flags.push(["file exists", 0]);
+    if (p[2]) flags.push(["FILE WRITABLE", 1]);
+    if (p[3]) flags.push(["dir exists", 0]);
+    if (p[4]) flags.push(["DIR WRITABLE", 1]);
+    if (p[6]) flags.push(["PARENT DIR WRITABLE", 1]);
+    if (p[8]) flags.push(["can read", 0]);
+    if (p[9]) flags.push(["can write", 1]);
+    if (p[10]) flags.push(["can modify", 1]);
+    return `<div style="margin-bottom:8px">
+      <div class="v">${esc(S[p[0]] || "")}</div>
+      ${p[5] ? `<div class="k">nearest existing parent: ${esc(S[p[5]])}</div>` : ""}
+      <div class="flags">${flags.map(([n, hot]) => `<span class="flag${hot ? " hot" : ""}">${n}</span>`).join("")}</div>
+    </div>`;
+  }).join("") : "";
+
+  // Scope ("blast radius") section, present only when --scope was used.
+  const sc = scopeOf(r);
+  let scopeBlock = "";
+  if (sc) {
+    const count = sc[0], userCount = sc[10];
+    const flags = [];
+    if (sc[1]) flags.push(["NOT LINKED", 1]);
+    if (sc[2]) flags.push(["ALL LINKS DISABLED", 1]);
+    if (sc[3]) flags.push(["enforced", 0]);
+    if (sc[4]) flags.push(["SECURITY-FILTERED", 1]);
+    if (sc[5]) flags.push(["WMI-FILTERED", 1]);
+    const listed = sc[6];
+    const principals = sc[9].map(i => S[i]).filter(Boolean);
+    const links = sc[8];
+    scopeBlock = `<div class="dsec">
+      <h4>Scope &mdash; blast radius</h4>
+      <div class="kv">
+        <div class="k">affected computers</div><div class="v">${count.toLocaleString()}</div>
+        ${userCount ? `<div class="k">affected users</div><div class="v">${userCount.toLocaleString()}</div>` : ""}
+      </div>
+      ${flags.length ? `<div class="flags">${flags.map(([n, hot]) =>
+        `<span class="flag${hot ? " hot" : ""}">${n}</span>`).join("")}</div>` : ""}
+      ${principals.length ? `<div class="k" style="margin-top:7px">Apply Group Policy granted to</div>
+        <div class="v">${esc(principals.join(", "))}</div>` : ""}
+      ${links.length ? `<div class="k" style="margin-top:7px">Links</div>
+        <div class="kv">${links.map(l =>
+          `<div class="v">${esc(S[l[0]] || "")}</div><div class="k">${esc(S[l[1]] || "")}</div>`).join("")}</div>` : ""}
+      ${sc[5] ? `<div class="k" style="margin-top:7px">WMI filter</div>
+        <div class="v">${esc(S[sc[5]] || "")}</div>` : ""}
+      ${listed.length ? `<div class="k" style="margin-top:7px">Computers${
+          count > listed.length ? ` (first ${listed.length} of ${count.toLocaleString()})` : ""}</div>
+        <div class="v" style="max-height:220px;overflow:auto">${
+          listed.map(i => esc(S[i] || "")).join("<br>")}</div>` : ""}
+      ${sc[7].length ? `<div class="prose" style="margin-top:8px;color:var(--muted)">${
+          sc[7].map(i => esc(S[i] || "")).join("<br>")}</div>` : ""}
+    </div>`;
+  }
+
+  // PORT ADDITION: operator guidance for this finding class, from
+  // view/finding_help.py. -1 means no entry matched.
+  const helpIdx = f.help ? f.help[r] : -1;
+  const h = (helpIdx >= 0 && D.helpEntries) ? D.helpEntries[helpIdx] : null;
+  const helpBlock = h ? `<div class="dsec help">
+      <h4>${esc(h.title)}</h4>
+      <div class="hq">What this is</div><div class="prose">${esc(h.what)}</div>
+      <div class="hq">How it is abused</div><div class="prose">${esc(h.abuse)}</div>
+      <div class="hq">How to fix it</div><div class="prose">${esc(h.fix)}</div>
+    </div>` : "";
+
+  pane.classList.remove("hide");
+  pane.innerHTML = `
+    <div class="dhead">
+      <span class="x" id="dclose">✕</span>
+      <div class="t-${t}" style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em">${t}</div>
+      <div style="font-weight:600;margin-top:2px">${esc(TYPES[f.type[r]])}</div>
+      <div class="meta">${esc(gpoName(r))}</div>
+    </div>
+    ${S[f.reason[r]] ? `<div class="dsec"><h4>Finding</h4><div class="prose">${esc(S[f.reason[r]])}</div></div>` : ""}
+    ${S[f.detail[r]] ? `<div class="dsec"><h4>Detail</h4><div class="prose">${esc(S[f.detail[r]])}</div></div>` : ""}
+    ${helpBlock}
+    ${scopeBlock}
+    ${aclBlock ? `<div class="dsec"><h4>Access control</h4>${aclBlock}</div>` : ""}
+    ${pathBlock ? `<div class="dsec"><h4>Assessed paths</h4>${pathBlock}</div>` : ""}
+    <div class="dsec"><h4>Setting</h4>${settingBlock}</div>
+    <div class="dsec"><h4>Source file</h4><div class="v">${esc(S[f.source[r]] || "—")}</div></div>
+    <div class="dsec"><h4>GPO</h4>
+      <div class="kv">
+        <div class="k">display name</div><div class="v">${esc(S[g[0]] || "")}</div>
+        <div class="k">uid</div><div class="v">${esc(S[g[1]] || "")}</div>
+        <div class="k">sysvol path</div><div class="v">${esc(S[g[2]] || "")}</div>
+        <div class="k">distinguished name</div><div class="v">${esc(S[g[3]] || "")}</div>
+        <div class="k">version</div><div class="v">${esc(S[g[4]] || "")}</div>
+        <div class="k">computer policy</div><div class="v">${g[5] ? "enabled" : "disabled"}</div>
+        <div class="k">user policy</div><div class="v">${g[6] ? "enabled" : "disabled"}</div>
+        <div class="k">morphed (NTFRS)</div><div class="v">${g[7] ? "yes" : "no"}</div>
+        <div class="k">created</div><div class="v">${esc(S[g[8]] || "")}</div>
+        <div class="k">modified</div><div class="v">${esc(S[g[9]] || "")}</div>
+      </div>
+    </div>
+    <div class="dsec"><h4>GPO links</h4>${links}</div>`;
+  document.getElementById("dclose").onclick = () => {
+    pane.classList.add("hide"); selected = -1; render(true);
+  };
+  render(true);
+}
+
+/* ---------------------------------------------------------------- exporting */
+
+function exportRows(kind) {
+  const f = D.findings;
+  if (kind === "csv") {
+    const q = s => `"${String(s == null ? "" : s).replace(/"/g, '""')}"`;
+    const lines = ["Triage,GPO,GPO UID,Setting type,Policy,Affected computers,Scope flags,Finding reason,Finding detail,Source,Sysvol path"];
+    for (const r of view) {
+      const g = D.gpos[f.gpo[r]];
+      const sc = scopeOf(r);
+      const reach = sc ? (sc[1] ? "not linked" : sc[2] ? "links disabled" : sc[0]) : "";
+      const scFlags = !sc ? "" : [sc[3] ? "enforced" : "", sc[4] ? "security-filtered" : "",
+                                  sc[5] ? "wmi-filtered" : ""].filter(Boolean).join(" ");
+      lines.push([triageName(f.triage[r]), S[g[0]], S[g[1]], TYPES[f.type[r]], POLICY[f.policy[r]],
+                  reach, scFlags,
+                  S[f.reason[r]], S[f.detail[r]], S[f.source[r]], S[g[2]]].map(q).join(","));
+    }
+    download(lines.join("\r\n"), "group3r-filtered.csv", "text/csv");
+  } else {
+    const rows = view.map(r => {
+      const g = D.gpos[f.gpo[r]];
+      return {
+        triage: triageName(f.triage[r]),
+        gpo: { displayName: S[g[0]], uid: S[g[1]], pathInSysvol: S[g[2]], distinguishedName: S[g[3]] },
+        settingType: TYPES[f.type[r]],
+        scope: (() => {
+          const sc = scopeOf(r);
+          if (!sc) return null;
+          return {
+            affectedComputerCount: sc[0],
+            affectedUserCount: sc[10],
+            notLinked: !!sc[1],
+            allLinksDisabled: !!sc[2],
+            enforced: !!sc[3],
+            securityFilteringNarrowed: !!sc[4],
+            wmiFilter: S[sc[5]] || null,
+            applyGroupPolicyGrantedTo: sc[9].map(i => S[i]).filter(Boolean),
+            links: sc[8].map(l => ({ container: S[l[0]], status: S[l[1]] })),
+            computers: sc[6].map(i => S[i]),
+            computersTruncated: sc[0] > sc[6].length,
+            notes: sc[7].map(i => S[i]),
+          };
+        })(),
+        policyType: POLICY[f.policy[r]],
+        findingReason: S[f.reason[r]] || null,
+        findingDetail: S[f.detail[r]] || null,
+        source: S[f.source[r]] || null,
+        setting: Object.fromEntries(f.fields[r].map(kv => [S[kv[0]], S[kv[1]]])),
+        acl: f.aces[r].map(a => ({ trustee: S[a[0]], sid: S[a[1]], type: S[a[2]], rights: S[a[3]] })),
+        paths: f.paths[r].map(p => ({
+          path: S[p[0]], fileExists: !!p[1], fileWritable: !!p[2],
+          directoryExists: !!p[3], directoryWritable: !!p[4],
+          parentDirectoryExists: S[p[5]] || null, parentDirectoryWritable: !!p[6],
+          canRead: !!p[8], canWrite: !!p[9], canModify: !!p[10],
+        })),
+      };
+    });
+    download(JSON.stringify({ meta: D.meta, filter: state.query, rows }, null, 1),
+             "group3r-filtered.json", "application/json");
+  }
+}
+
+function download(text, name, mime) {
+  const url = URL.createObjectURL(new Blob([text], { type: mime }));
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ------------------------------------------------------------------- wiring */
+
+let debounce = null;
+
+function wire() {
+  document.getElementById("q").addEventListener("input", e => {
+    clearTimeout(debounce);
+    const v = e.target.value;
+    debounce = setTimeout(() => { state.query = v; apply(); }, 160);
+  });
+
+  document.getElementById("triagePills").addEventListener("click", e => {
+    const pill = e.target.closest(".pill");
+    if (!pill) return;
+    const t = pill.dataset.t;
+    if (state.triage.has(t)) { state.triage.delete(t); pill.classList.remove("on"); }
+    else { state.triage.add(t); pill.classList.add("on"); }
+    apply();
+  });
+
+  document.getElementById("facets").addEventListener("change", e => {
+    const el = e.target;
+    if (el.dataset.type !== undefined) state.types = collect("[data-type]", "type");
+    else if (el.dataset.gpo !== undefined) state.gpos = collect("[data-gpo]", "gpo");
+    else if (el.dataset.pol !== undefined) {
+      state.policies = new Set([...document.querySelectorAll("[data-pol]")]
+        .filter(x => x.checked).map(x => +x.dataset.pol));
+    }
+    else if (el.dataset.reach !== undefined) {
+      const boxes = [...document.querySelectorAll("[data-reach]")];
+      const on = boxes.filter(b => b.checked).map(b => b.dataset.reach);
+      state.reach = on.length === boxes.length ? null : new Set(on);
+    }
+    else if (el.dataset.flag !== undefined) {
+      state.requireFlags = new Set([...document.querySelectorAll("[data-flag]")]
+        .filter(x => x.checked).map(x => x.dataset.flag));
+    }
+    apply();
+  });
+
+  document.getElementById("facets").addEventListener("click", e => {
+    const a = e.target.closest("a[data-all],a[data-none]");
+    if (!a) return;
+    const group = a.dataset.all || a.dataset.none;
+    const on = !!a.dataset.all;
+    const sel = group === "types" ? "[data-type]"
+              : group === "reach" ? "[data-reach]" : "[data-gpo]";
+    document.querySelectorAll(sel).forEach(x => {
+      const label = x.closest("label");
+      if (label && label.style.display === "none") return;   // respect list filter
+      x.checked = on;
+    });
+    if (group === "reach") {
+      const boxes = [...document.querySelectorAll(sel)];
+      const checked = boxes.filter(b => b.checked).map(b => b.dataset.reach);
+      state.reach = checked.length === boxes.length ? null : new Set(checked);
+    } else {
+      state[group] = collect(sel, group === "types" ? "type" : "gpo");
+    }
+    apply();
+  });
+
+  const gf = document.getElementById("gpoFilter");
+  if (gf) gf.addEventListener("input", () => {
+    const needle = gf.value.toLowerCase();
+    document.querySelectorAll("#fGpo label").forEach(l => {
+      l.style.display = !needle || l.dataset.name.includes(needle) ? "" : "none";
+    });
+  });
+
+  document.querySelectorAll(".thead [data-sort]").forEach(h => {
+    h.addEventListener("click", () => {
+      const k = h.dataset.sort;
+      if (sortKey === k) sortDir = -sortDir;
+      else { sortKey = k; sortDir = k === "triage" ? -1 : 1; }
+      sortView(); render(true);
+    });
+  });
+
+  scroller.addEventListener("scroll", () => render(false), { passive: true });
+  sizer.addEventListener("click", e => {
+    const row = e.target.closest(".row");
+    if (row) showDetail(+row.dataset.i);
+  });
+
+  document.getElementById("btnCsv").onclick = () => exportRows("csv");
+  document.getElementById("btnJson").onclick = () => exportRows("json");
+  document.getElementById("btnReset").onclick = () => {
+    state.query = ""; document.getElementById("q").value = "";
+    state.triage = new Set(["Green", "Yellow", "Red", "Black", "None"]);
+    state.policies = new Set([0, 1, 2, 3]);
+    state.types = null; state.gpos = null;
+    state.reach = null; state.requireFlags = new Set();
+    document.querySelectorAll("[data-flag]").forEach(x => x.checked = false);
+    document.querySelectorAll("#facets input[type=checkbox]").forEach(x => x.checked = true);
+    document.querySelectorAll(".pill").forEach(p => p.classList.add("on"));
+    apply();
+  };
+
+  window.addEventListener("keydown", e => {
+    if (e.key === "/" && document.activeElement.id !== "q") {
+      e.preventDefault(); document.getElementById("q").focus();
+    } else if (e.key === "Escape") {
+      document.getElementById("detail").classList.add("hide");
+      selected = -1; render(true);
+    } else if ((e.key === "j" || e.key === "k") && document.activeElement.id !== "q") {
+      const next = Math.min(view.length - 1, Math.max(0, selected + (e.key === "j" ? 1 : -1)));
+      if (view.length) {
+        showDetail(next);
+        scroller.scrollTop = Math.max(0, next * rowH - scroller.clientHeight / 2);
+      }
+    }
+  });
+
+  window.addEventListener("resize", () => render(true));
+}
+
+function collect(selector, attr) {
+  const boxes = [...document.querySelectorAll(selector)];
+  const checked = boxes.filter(b => b.checked).map(b => +b.dataset[attr]);
+  return checked.length === boxes.length ? null : new Set(checked);
+}
+
+boot().catch(err => {
+  document.getElementById("loading").innerHTML =
+    "<div><b>Failed to load report</b><br>" + esc(err && err.message || err) + "</div>";
+});
+</script>
+</body>
+</html>

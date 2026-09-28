@@ -1,0 +1,636 @@
+2026-09-28 13:51:44 +02:00 [Info] Parsed args successfully.
+2026-09-28 13:51:44 +02:00 [Info] Resolved scope for 12 GPOs: 11 linked, 1 orphaned, 38 GPO-to-computer applications.
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Default Domain Policy {31B2F340-016D-11D2-945F-00C04FB984F9} Current                 |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 1/12/2024 9:04:00 AM                                                                 |
+| Date Modified   | 9/3/2025 2:12:00 PM                                                                  |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{31B2F340-016D-11D2-945F-00C04FB984F9} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | DC=contoso,DC=local (Enabled, Unenforced)                                            |
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+    |---------------------------|-----------------|
+    | MaxTicketAge              | 100             |
+    \___
+        | Finding | Green                                                   |
+        |---------|---------------------------------------------------------|
+        | Reason  | Non-default maximum Kerberos ticket age configured. 100 |
+        | Detail  | Dunno, bit interesting.                                 |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+    |---------------------------|-----------------|
+    | MaxRenewAge               | 42              |
+    \___
+        | Finding | Green                                                      |
+        |---------|------------------------------------------------------------|
+        | Reason  | Non-default maximum Kerberos renewal period configured. 42 |
+        | Detail  | Dunno, bit interesting.                                    |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+    |---------------------------|-----------------|
+    | MaxServiceAge             | 6000            |
+    \___
+        | Finding | Green                                                            |
+        |---------|------------------------------------------------------------------|
+        | Reason  | Non-default maximum Kerberos service ticket age configured. 6000 |
+        | Detail  | Dunno, bit interesting.                                          |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+    |---------------------------|-----------------|
+    | MaxClockSkew              | 15              |
+    \___
+        | Finding | Green                                               |
+        |---------|-----------------------------------------------------|
+        | Reason  | Non-default maximum Kerberos clock skew setting. 15 |
+        | Detail  | Dunno, bit interesting.                             |
+
+\___
+    | Setting - Computer Policy | Kerberos Policy |
+    |---------------------------|-----------------|
+    | TicketValidateClient      | 0               |
+    \___
+        | Finding | Green                                                                         |
+        |---------|-------------------------------------------------------------------------------|
+        | Reason  | Kerberos 'Enforce user logon restrictions' setting is disabled.               |
+        | Detail  | Probably no significant impact, read here for more details:                   |
+        |         | https://docs.microsoft.com/en-us/windows/security/threat-protection/security- |
+        |         | policy-settings/enforce-user-logon-restrictions                               |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | LmCompatibilityLevel                                    |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 1                                                       |
+    \___
+        | Finding | Black                                                                            |
+        |---------|----------------------------------------------------------------------------------|
+        | Reason  | This registry key was set to a 'less-than-good' value, which made it             |
+        |         | interesting.                                                                     |
+        | Detail  | Determines which challenge response authentication protocol is used for network  |
+        |         | logons. If set lower than 3, NTLMv1 auth will be supported. Coerce auth from     |
+        |         | this machine with PetitPotam or PrinterBug, catch the auth with Responder (with  |
+        |         | the --disable-ess parameter), and crack it down to an NT hash here:              |
+        |         | https://crack.sh/get-cracking/. After that, consider silver ticket to compromise |
+        |         | the host. Network security: LAN Manager authentication level                     |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | NoLMHash                                                |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 0                                                       |
+
+\___
+    | Setting - Computer Policy | Registry                                                                 |
+    |---------------------------|--------------------------------------------------------------------------|
+    | Action                    | Update                                                                   |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\Netlogon\Parameters |
+    | Value Name                | RequireSignOrSeal                                                        |
+    | Value Type                | REG_DWORD                                                                |
+    | Value String              | 0                                                                        |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Helpdesk Workstation Delegation {8B40C2D6-7E19-4A53-B0C8-1F5D3A97E006} Current       |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 1/5/2023 12:00:00 PM                                                                 |
+| Date Modified   | 2/20/2026 9:30:00 AM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{8B40C2D6-7E19-4A53-B0C8-1F5D3A97E006} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Finance,OU=Workstations,DC=contoso,DC=local (Enabled, Unenforced)                 |
+\___
+    | Setting - Computer Policy | Printer                                     |
+    |---------------------------|---------------------------------------------|
+    | Name                      | \\print01.contoso.local\Helpdesk-Laser      |
+    | Action                    | Update                                      |
+    | Comment                   | Helpdesk floor printer                      |
+    | Path                      | \\print01.contoso.local\Helpdesk-Laser      |
+    | UserName                  | CONTOSO\svc_print                           |
+    | Cpassword                 | OGNXqzvVLazgJx622yRLu0ySOxtHnfMckIvPOaz/Nnk |
+    | Password                  | SynthDemoP@ss1                              |
+    \___
+        | Finding | Black                                                  |
+        |---------|--------------------------------------------------------|
+        | Reason  | Group Policy Preferences password found:SynthDemoP@ss1 |
+        | Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63     |
+
+\___
+    | Setting - Computer Policy | Registry                                                                     |
+    |---------------------------|------------------------------------------------------------------------------|
+    | Action                    | Update                                                                       |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System |
+    | Value Name                | EnableLUA                                                                    |
+    | Value Type                | REG_DWORD                                                                    |
+    | Value String              | 0                                                                            |
+
+\___
+    | Setting - Computer Policy | Registry                                                                 |
+    |---------------------------|--------------------------------------------------------------------------|
+    | Action                    | Update                                                                   |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon |
+    | Value Name                | DefaultUserName                                                          |
+    | Value Type                | REG_SZ                                                                   |
+    | Value String              | CONTOSO\kioskuser                                                        |
+
+\___
+    | Setting - Computer Policy | Registry                                                                 |
+    |---------------------------|--------------------------------------------------------------------------|
+    | Action                    | Update                                                                   |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon |
+    | Value Name                | AutoAdminLogon                                                           |
+    | Value Type                | REG_SZ                                                                   |
+    | Value String              | 1                                                                        |
+
+\___
+    | Setting - Computer Policy | Registry                                                            |
+    |---------------------------|---------------------------------------------------------------------|
+    | Action                    | Update                                                              |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\WinRM\Client |
+    | Value Name                | AllowUnencryptedTraffic                                             |
+    | Value Type                | REG_DWORD                                                           |
+    | Value String              | 1                                                                   |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Branch Site Proxy Settings {3D9E4A61-1C58-4F26-8B93-7A6D2E50C00A} Current            |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 3/2/2022 10:15:00 AM                                                                 |
+| Date Modified   | 8/15/2024 12:00:00 PM                                                                |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{3D9E4A61-1C58-4F26-8B93-7A6D2E50C00A} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+\___
+    | Setting - User Policy | Registry                                                                      |
+    |-----------------------|-------------------------------------------------------------------------------|
+    | Action                | Update                                                                        |
+    | Key                   | HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings |
+    | Value Name            | ProxyEnable                                                                   |
+    | Value Type            | REG_DWORD                                                                     |
+    | Value String          | 1                                                                             |
+
+\___
+    | Setting - User Policy | Registry                                                                      |
+    |-----------------------|-------------------------------------------------------------------------------|
+    | Action                | Update                                                                        |
+    | Key                   | HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Internet Settings |
+    | Value Name            | ProxyServer                                                                   |
+    | Value Type            | REG_SZ                                                                        |
+    | Value String          | proxy.branch.contoso.local:8080                                               |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | SQL Service Configuration {5E71B3A9-C820-4D77-8F16-4B9E2C61A005} Current             |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 2/25/2021 10:45:00 AM                                                                |
+| Date Modified   | 6/19/2024 3:50:00 PM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{5E71B3A9-C820-4D77-8F16-4B9E2C61A005} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=SQL,OU=Servers,DC=contoso,DC=local (Enabled, Unenforced)                          |
+\___
+    | Setting - Computer Policy | Service      |
+    |---------------------------|--------------|
+    | Service Name              | "SQLBrowser" |
+    | Startup Type              | Automatic    |
+    \___
+        | Finding | Red                                                                            |
+        |---------|--------------------------------------------------------------------------------|
+        | Reason  | A Windows service's ACL is being configured to grant abusable permissions to a |
+        |         | target trustee.                                                                |
+        | Detail  | This should allow local privilege escalation on affected hosts. Service:       |
+        |         | SQLBrowser, Trustee: Everyone - S-1-1-0                                        |
+
+\___
+    | Setting - Computer Policy | Service     |
+    |---------------------------|-------------|
+    | Service Name              | "SQLWriter" |
+    | Startup Type              | Automatic   |
+
+\___
+    | Setting - Computer Policy | Data Source                                 |
+    |---------------------------|---------------------------------------------|
+    | Name                      | CorpReporting                               |
+    | Action                    | Update                                      |
+    | Description               | Reporting warehouse ODBC source             |
+    | Driver                    | SQL Server                                  |
+    | Cpassword                 | OGNXqzvVLazgJx622yRLu0ySOxtHnfMckIvPOaz/Nnk |
+    | Password                  | CorpReporting                               |
+    \___
+        | Finding | Black                                                  |
+        |---------|--------------------------------------------------------|
+        | Reason  | Group Policy Preferences password found:SynthDemoP@ss1 |
+        | Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63     |
+    \___
+        | Finding | Green                                                   |
+        |---------|---------------------------------------------------------|
+        | Reason  | Potentially useful database connection info identified. |
+        | Detail  | Could be helpful for targeting other attacks.           |
+
+\___
+    | Setting - Computer Policy | Service                                     |
+    |---------------------------|---------------------------------------------|
+    | Name                      | MSSQLSERVER                                 |
+    | Service Name              | MSSQLSERVER                                 |
+    | UserName                  | CONTOSO\svc_sql                             |
+    | Cpassword                 | OGNXqzvVLazgJx622yRLu0ySOxtHnfMckIvPOaz/Nnk |
+    | Password                  | SynthDemoP@ss1                              |
+    \___
+        | Finding | Black                                                  |
+        |---------|--------------------------------------------------------|
+        | Reason  | Group Policy Preferences password found:SynthDemoP@ss1 |
+        | Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63     |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Legacy Authentication Fallback {6E3F7B92-8D41-4C05-A719-5B2E9C84F009} Current        |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 5/11/2016 9:30:00 AM                                                                 |
+| Date Modified   | 2/28/2017 2:45:00 PM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{6E3F7B92-8D41-4C05-A719-5B2E9C84F009} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Web,OU=Servers,DC=contoso,DC=local (Disabled, Unenforced)                         |
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | LmCompatibilityLevel                                    |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 0                                                       |
+    \___
+        | Finding | Black                                                                            |
+        |---------|----------------------------------------------------------------------------------|
+        | Reason  | This registry key was set to a 'less-than-good' value, which made it             |
+        |         | interesting.                                                                     |
+        | Detail  | Determines which challenge response authentication protocol is used for network  |
+        |         | logons. If set lower than 3, NTLMv1 auth will be supported. Coerce auth from     |
+        |         | this machine with PetitPotam or PrinterBug, catch the auth with Responder (with  |
+        |         | the --disable-ess parameter), and crack it down to an NT hash here:              |
+        |         | https://crack.sh/get-cracking/. After that, consider silver ticket to compromise |
+        |         | the host. Network security: LAN Manager authentication level                     |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | RestrictAnonymous                                       |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 0                                                       |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Server Maintenance Tasks {9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004} Current              |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 7/11/2022 1:20:00 PM                                                                 |
+| Date Modified   | 1/28/2025 11:05:00 AM                                                                |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{9D2F6E80-A4C3-4E11-95B8-6C3A7F82D004} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Servers,DC=contoso,DC=local (Enabled, Unenforced)                                 |
+\___
+    | Setting - Computer Policy | Scheduled Task |
+    |---------------------------|----------------|
+    | Name                      | Nightly Backup |
+    | Task Type                 | Task           |
+    | Enabled                   | False          |
+    | Name                      | Nightly Backup |
+    \___
+        | Principal | 1                                           |
+        |-----------|---------------------------------------------|
+        | UserID    | CONTOSO\svc_backup                          |
+        | Cpassword | OGNXqzvVLazgJx622yRLu0ySOxtHnfMckIvPOaz/Nnk |
+        | Password  | SynthDemoP@ss1                              |
+        | LogonType | password                                    |
+    \___
+        | Execute Action    |                                     |
+        |-------------------|-------------------------------------|
+        | Command           | C:\Program Files\Contoso\backup.cmd |
+        | Args              | /target D:\Backups /quiet           |
+        | Working Directory | C:\Program Files\Contoso            |
+    \___
+        | Finding | Black                                                  |
+        |---------|--------------------------------------------------------|
+        | Reason  | Group Policy Preferences password found:SynthDemoP@ss1 |
+        | Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63     |
+
+\___
+    | Setting - Computer Policy | Scheduled Task                     |
+    |---------------------------|------------------------------------|
+    | Name                      | Inventory Sync                     |
+    | Task Type                 | TaskV2                             |
+    | Description               | Pushes asset inventory to the CMDB |
+    | Enabled                   | True                               |
+    | Name                      | Inventory Sync                     |
+    \___
+        | Principal | 1                                           |
+        |-----------|---------------------------------------------|
+        | Id        | Author                                      |
+        | UserID    | CONTOSO\svc_inventory                       |
+        | Cpassword | OGNXqzvVLazgJx622yRLu0ySOxtHnfMckIvPOaz/Nnk |
+        | Password  | SynthDemoP@ss1                              |
+        | LogonType | Password                                    |
+        | RunLevel  | HighestAvailable                            |
+    \___
+        | Execute Action |                                        |
+        |----------------|----------------------------------------|
+        | Command        | C:\Program Files\Contoso\inventory.exe |
+        | Args           | /push                                  |
+    \___
+        | Finding | Black                                                  |
+        |---------|--------------------------------------------------------|
+        | Reason  | Group Policy Preferences password found:SynthDemoP@ss1 |
+        | Detail  | Refer to MS14-025 and https://adsecurity.org/?p=63     |
+    \___
+        | Finding | Yellow                                                                       |
+        |---------|------------------------------------------------------------------------------|
+        | Reason  | Scheduled Task exec action has an arguments setting that looks like it might |
+        |         | have a password in it?                                                       |
+        | Detail  | Arguments were: /push                                                        |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Default Domain Controllers Policy {6AC1786C-016F-11D2-945F-00C04FB984F9} Current     |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 1/12/2024 9:04:00 AM                                                                 |
+| Date Modified   | 1/12/2024 9:04:00 AM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{6AC1786C-016F-11D2-945F-00C04FB984F9} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Domain Controllers,DC=contoso,DC=local (Enabled, Unenforced)                      |
+\___
+    | Setting - Computer Policy | User Rights Assignment |
+    |---------------------------|------------------------|
+    | Privilege Name            | SeDebugPrivilege       |
+    | Trustee                   | Everyone S-1-1-0       |
+    \___
+        | Finding | Black                                                                |
+        |---------|----------------------------------------------------------------------|
+        | Reason  | Well-known low-priv user/group assigned an interesting OS privilege. |
+        | Detail  | SeDebugPrivilege was assigned to Everyone - S-1-1-0                  |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment                                              |
+    |---------------------------|---------------------------------------------------------------------|
+    | Privilege Name            | SeTakeOwnershipPrivilege                                            |
+    | Trustee                   | Failed SID resolution S-1-5-21-1004336348-1177238915-682003330-1134 |
+    |                           | Administrators S-1-5-32-544                                         |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment        |
+    |---------------------------|-------------------------------|
+    | Privilege Name            | SeBackupPrivilege             |
+    | Trustee                   | Administrators S-1-5-32-544   |
+    |                           | Backup Operators S-1-5-32-551 |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment        |
+    |---------------------------|-------------------------------|
+    | Privilege Name            | SeRestorePrivilege            |
+    | Trustee                   | Administrators S-1-5-32-544   |
+    |                           | Backup Operators S-1-5-32-551 |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment                                    |
+    |---------------------------|-----------------------------------------------------------|
+    | Privilege Name            | SeRemoteInteractiveLogonRight                             |
+    | Trustee                   | Domain Users S-1-5-21-1004336348-1177238915-682003330-513 |
+    |                           | Administrators S-1-5-32-544                               |
+    \___
+        | Finding | Black                                                                  |
+        |---------|------------------------------------------------------------------------|
+        | Reason  | Well-known low-priv user/group assigned an interesting OS privilege.   |
+        | Detail  | SeRemoteInteractiveLogonRight was assigned to Domain Users - S-1-5-21- |
+        |         | 1004336348-1177238915-682003330-513                                    |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment      |
+    |---------------------------|-----------------------------|
+    | Privilege Name            | SeLoadDriverPrivilege       |
+    | Trustee                   | Administrators S-1-5-32-544 |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment              |
+    |---------------------------|-------------------------------------|
+    | Privilege Name            | SeSystemTimePrivilege               |
+    | Trustee                   | Administrators S-1-5-32-544         |
+    |                           | NT Authority\Local Service S-1-5-19 |
+
+\___
+    | Setting - Computer Policy | User Rights Assignment      |
+    |---------------------------|-----------------------------|
+    | Privilege Name            | SeEnableDelegationPrivilege |
+    | Trustee                   | Administrators S-1-5-32-544 |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Local Administrator Provisioning {C48E1A77-31D9-4B6C-BF20-7A19D3E4C003} Current      |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 9/3/2018 9:45:00 AM                                                                  |
+| Date Modified   | 2/21/2019 4:30:00 PM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{C48E1A77-31D9-4B6C-BF20-7A19D3E4C003} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Workstations,DC=contoso,DC=local (Enabled, Unenforced)                            |
+\___
+    | Setting - Computer Policy | Group                                                                  |
+    |---------------------------|------------------------------------------------------------------------|
+    | Name                      | Administrators (built-in)                                              |
+    | Action                    | Update                                                                 |
+    | Delete All Groups         | False                                                                  |
+    | Delete All Users          | False                                                                  |
+    | Remove Accounts           | False                                                                  |
+    | Member                    | Add CONTOSO\Domain Users  S-1-5-21-1004336348-1177238915-682003330-513 |
+    | Member                    | Add CONTOSO\Helpdesk  S-1-5-21-1004336348-1177238915-682003330-1134    |
+    \___
+        | Finding | Green                                                                          |
+        |---------|--------------------------------------------------------------------------------|
+        | Reason  | A privileged local group is having a member added to it. Might be interesting, |
+        |         | hard to say.                                                                   |
+        | Detail  | Group Administrators is having CONTOSO\Domain Users added to it.               |
+    \___
+        | Finding | Green                                                                          |
+        |---------|--------------------------------------------------------------------------------|
+        | Reason  | A privileged local group is having a member added to it. Might be interesting, |
+        |         | hard to say.                                                                   |
+        | Detail  | Group Administrators is having CONTOSO\Helpdesk added to it.                   |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Staff Drive Mappings {2F9C8D41-5B60-47E2-9A13-8E7F5C20B002} Current                  |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 4/8/2019 3:15:00 PM                                                                  |
+| Date Modified   | 6/17/2021 10:22:00 AM                                                                |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{2F9C8D41-5B60-47E2-9A13-8E7F5C20B002} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Staff,DC=contoso,DC=local (Enabled, Unenforced)                                   |
+\___
+    | Setting - User Policy | Script                                       |
+    |-----------------------|----------------------------------------------|
+    | Script Type           | Logon                                        |
+    | CmdLine               | map-drives.cmd                               |
+    | Args                  | /user CONTOSO\svc_share /pass SynthDemoP@ss1 |
+    \___
+        | Finding | Yellow                                                                         |
+        |---------|--------------------------------------------------------------------------------|
+        | Reason  | Logon script has an arguments setting that looks like it might have a password |
+        |         | in it?                                                                         |
+        | Detail  | Arguments were: /user CONTOSO\svc_share /pass SynthDemoP@ss1                   |
+
+\___
+    | Setting - User Policy | Script           |
+    |-----------------------|------------------|
+    | Script Type           | Logon            |
+    | CmdLine               | set-printers.vbs |
+    | Args                  | /quiet           |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Retired Kiosk Lockdown {4A8D5C10-6F32-4B87-9E24-3C7B1A56D008} Current                |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 6/14/2017 10:00:00 AM                                                                |
+| Date Modified   | 4/2/2018 9:30:00 AM                                                                  |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{4A8D5C10-6F32-4B87-9E24-3C7B1A56D008} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+\___
+    | Setting - Computer Policy | Registry                                                                       |
+    |---------------------------|--------------------------------------------------------------------------------|
+    | Action                    | Update                                                                         |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer |
+    | Value Name                | NoControlPanel                                                                 |
+    | Value Type                | REG_DWORD                                                                      |
+    | Value String              | 1                                                                              |
+
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | LimitBlankPasswordUse                                   |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 0                                                       |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Engineering Software Deployment {1C6A9F38-2B74-4D90-A5E1-9D8C4B30F007} Current       |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 9/18/2023 2:00:00 PM                                                                 |
+| Date Modified   | 11/4/2025 4:30:00 PM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{1C6A9F38-2B74-4D90-A5E1-9D8C4B30F007} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Engineering,OU=Workstations,DC=contoso,DC=local (Enabled, Unenforced)             |
+\___
+    | Setting - Computer Policy | File                                       |
+    |---------------------------|--------------------------------------------|
+    | FileName                  | toolchain.cmd                              |
+    | FromPath                  | \\fs01.contoso.local\deploy$\toolchain.cmd |
+    | TargetPath                | C:\ProgramData\Contoso\toolchain.cmd       |
+
+\___
+    | Setting - Computer Policy | Shortcut                                       |
+    |---------------------------|------------------------------------------------|
+    | Name                      | Build Tools                                    |
+    | Action                    | Update                                         |
+    | Comment                   | Engineering build toolchain                    |
+    | Shortcut Path             | %DesktopDir%\Build Tools                       |
+    | Target Type               | FILESYSTEM                                     |
+    | Target Path               | \\fs01.contoso.local\deploy$\build.exe         |
+    | Arguments                 | /config \\fs01.contoso.local\deploy$\build.cfg |
+    | IconIndex                 | 0                                              |
+    | Status                    | Build Tools                                    |
+
+
+2026-09-28 13:51:44 +02:00 [GPO] 
+| GPO             | Workstation Security Baseline {7A3B1C55-9E21-4F0A-8C77-2D6E4B91A001} Current         |
+|-----------------|--------------------------------------------------------------------------------------|
+| Date Created    | 2/20/2024 11:30:00 AM                                                                |
+| Date Modified   | 1/14/2026 8:45:00 AM                                                                 |
+| Path in SYSVOL  | \\contoso.local\sysvol\contoso.local\Policies\{7A3B1C55-9E21-4F0A-8C77-2D6E4B91A001} |
+| Computer Policy | Enabled                                                                              |
+| User Policy     | Enabled                                                                              |
+| Link            | OU=Workstations,DC=contoso,DC=local (Enabled, Enforced)                              |
+\___
+    | Setting - Computer Policy | Registry                                                |
+    |---------------------------|---------------------------------------------------------|
+    | Action                    | Update                                                  |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Lsa |
+    | Value Name                | LmCompatibilityLevel                                    |
+    | Value Type                | REG_DWORD                                               |
+    | Value String              | 2                                                       |
+    \___
+        | Finding | Black                                                                            |
+        |---------|----------------------------------------------------------------------------------|
+        | Reason  | This registry key was set to a 'less-than-good' value, which made it             |
+        |         | interesting.                                                                     |
+        | Detail  | Determines which challenge response authentication protocol is used for network  |
+        |         | logons. If set lower than 3, NTLMv1 auth will be supported. Coerce auth from     |
+        |         | this machine with PetitPotam or PrinterBug, catch the auth with Responder (with  |
+        |         | the --disable-ess parameter), and crack it down to an NT hash here:              |
+        |         | https://crack.sh/get-cracking/. After that, consider silver ticket to compromise |
+        |         | the host. Network security: LAN Manager authentication level                     |
+
+\___
+    | Setting - Computer Policy | Registry                                                                      |
+    |---------------------------|-------------------------------------------------------------------------------|
+    | Action                    | Update                                                                        |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\SecurityProviders\WDigest |
+    | Value Name                | UseLogonCredential                                                            |
+    | Value Type                | REG_DWORD                                                                     |
+    | Value String              | 1                                                                             |
+
+\___
+    | Setting - Computer Policy | Registry                                                            |
+    |---------------------------|---------------------------------------------------------------------|
+    | Action                    | Update                                                              |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient |
+    | Value Name                | EnableMulticast                                                     |
+    | Value Type                | REG_DWORD                                                           |
+    | Value String              | 1                                                                   |
+
+\___
+    | Setting - Computer Policy | Registry                                                         |
+    |---------------------------|------------------------------------------------------------------|
+    | Action                    | Update                                                           |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\Installer |
+    | Value Name                | AlwaysInstallElevated                                            |
+    | Value Type                | REG_DWORD                                                        |
+    | Value String              | 1                                                                |
+
+\___
+    | Setting - Computer Policy | Registry                                                                         |
+    |---------------------------|----------------------------------------------------------------------------------|
+    | Action                    | Update                                                                           |
+    | Key                       | HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanWorkstation\Paramete- |
+    |                           | rs                                                                               |
+    | Value Name                | RequireSecuritySignature                                                         |
+    | Value Type                | REG_DWORD                                                                        |
+    | Value String              | 0                                                                                |
+
+\___
+    | Setting - Computer Policy | Registry                                                                     |
+    |---------------------------|------------------------------------------------------------------------------|
+    | Action                    | Update                                                                       |
+    | Key                       | HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System |
+    | Value Name                | LocalAccountTokenFilterPolicy                                                |
+    | Value Type                | REG_DWORD                                                                    |
+    | Value String              | 1                                                                            |
+
+
+2026-09-28 13:51:44 +02:00 [Info] Finished at 2026-09-28 13:51:44.248164+02:00
+2026-09-28 13:51:44 +02:00 [Info] Group3rin' took 0:00:00.040476
+2026-09-28 13:51:44 +02:00 [Finish] 

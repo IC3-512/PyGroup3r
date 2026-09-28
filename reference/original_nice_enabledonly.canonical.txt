@@ -1,0 +1,54 @@
+[Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{2CE5ACF5-D072-4267-8E45-5C8F8843DEC6}/Machine/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x00037] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+[Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{36FA6290-EFEE-4909-845A-4A33A04D3088}/Machine/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x00037] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+[Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{5CFC9C70-A964-4FA0-A1EB-91C36271CA98}/User/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at System.Security.AccessControl.NativeObjectSecurity.InternalGet (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00024] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections, System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode exceptionFromErrorCode, System.Object exceptionContext) [0x0000c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.FileSystemSecurity..ctor (System.Boolean isContainer, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.DirectorySecurity..ctor (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.IO.Directory.GetAccessControl (System.String path, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Group3r.Assessment.FsAclAnalyser.AnalyseFsAcl (System.IO.FileSystemInfo filesysInfo) [0x001df] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalyseDirPath (System.String dirPath) [0x00093] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x000e5] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+[Error] Failure processing setting from /opt/group3r/upstream/TestSysvol/Policies/{5CFC9C70-A964-4FA0-A1EB-91C36271CA98}/User/Scripts/scripts.ini/r/nSystem.PlatformNotSupportedException: Operation is not supported on this platform.
+  at System.Security.AccessControl.NativeObjectSecurity.InternalGet (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00024] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections, System.Security.AccessControl.NativeObjectSecurity+ExceptionFromErrorCode exceptionFromErrorCode, System.Object exceptionContext) [0x0000c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.NativeObjectSecurity..ctor (System.Boolean isContainer, System.Security.AccessControl.ResourceType resourceType, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.FileSystemSecurity..ctor (System.Boolean isContainer, System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.Security.AccessControl.DirectorySecurity..ctor (System.String name, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.IO.Directory.GetAccessControl (System.String path, System.Security.AccessControl.AccessControlSections includeSections) [0x00000] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Group3r.Assessment.FsAclAnalyser.AnalyseFsAcl (System.IO.FileSystemInfo filesysInfo) [0x001df] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalyseDirPath (System.String dirPath) [0x00093] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.PathAnalyser.AnalysePath (System.String originalPath) [0x000e5] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.Assessment.Analysers.ScriptAnalyser.Analyse (Group3r.Options.AssessmentOptions.AssessmentOptions assessmentOptions) [0x0015e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+  at Group3r.GroupCon+<>c__DisplayClass11_1.<EnqueueGpoTasks>b__0 () [0x0010e] in <04c6fc29e91843e087dc4170d71f8c05>:0 
+[Error] System.Security.Cryptography.CryptographicException: Bad PKCS7 padding. Invalid length 0.
+  at Mono.Security.Cryptography.SymmetricTransform.ThrowBadPaddingException (System.Security.Cryptography.PaddingMode padding, System.Int32 length, System.Int32 position) [0x0005c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.FinalDecrypt (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00179] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.TransformFinalBlock (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00034] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at LibSnaffle.ActiveDirectory.GpoSetting.DecryptCpassword (System.String cpassword) [0x00088] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+  at LibSnaffle.ActiveDirectory.XmlGpoFile.GetSettings () [0x00676] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+[Error] System.Security.Cryptography.CryptographicException: Bad PKCS7 padding. Invalid length 0.
+  at Mono.Security.Cryptography.SymmetricTransform.ThrowBadPaddingException (System.Security.Cryptography.PaddingMode padding, System.Int32 length, System.Int32 position) [0x0005c] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.FinalDecrypt (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00179] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at Mono.Security.Cryptography.SymmetricTransform.TransformFinalBlock (System.Byte[] inputBuffer, System.Int32 inputOffset, System.Int32 inputCount) [0x00034] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at LibSnaffle.ActiveDirectory.GpoSetting.DecryptCpassword (System.String cpassword) [0x00088] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+  at LibSnaffle.ActiveDirectory.XmlGpoFile.GetSettings () [0x00676] in <aaeecca1131940d991d21fa2e1679ff5>:0 
+[Finish] 
+[GPO] 
+[GPO] 
+[GPO] 
+[GPO] 
+[GPO] 
+[GPO] 
+[GPO] 
+[GPO] 
+[Info] Parsed args successfully.

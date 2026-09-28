@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Group3r — contoso.local</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f8;
+    --panel: #ffffff;
+    --panel-2: #f0f0f2;
+    --border: #d8d8de;
+    --text: #1a1a1f;
+    --muted: #61616b;
+    --accent: #2f6feb;
+    --accent-soft: #e4ecfd;
+    --green: #1a7f37;
+    --yellow: #9a6700;
+    --red: #cf222e;
+    --black: #0b0b0e;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --row-h: 34px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16161a;
+      --panel: #1e1e24;
+      --panel-2: #26262e;
+      --border: #33333d;
+      --text: #e8e8ed;
+      --muted: #9a9aa6;
+      --accent: #6b9bff;
+      --accent-soft: #23304d;
+      --green: #4ac26b;
+      --yellow: #e3b341;
+      --red: #ff6b74;
+      --black: #f2f2f7;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 13px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  /* ---------- header ---------- */
+  header {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    padding: 9px 14px; background: var(--panel);
+    border-bottom: 1px solid var(--border); flex: none;
+  }
+  .brand { font-weight: 650; letter-spacing: .3px; }
+  .brand span { color: var(--accent); }
+  .meta { color: var(--muted); font-size: 12px; }
+  .pills { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+  .pill {
+    padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    border: 1px solid transparent; cursor: pointer; user-select: none;
+    background: var(--panel-2); color: var(--muted);
+  }
+  .pill.on { border-color: currentColor; }
+  .pill[data-t="Black"].on { color: var(--black); background: color-mix(in srgb, var(--black) 14%, transparent); }
+  .pill[data-t="Red"].on { color: var(--red); background: color-mix(in srgb, var(--red) 14%, transparent); }
+  .pill[data-t="Yellow"].on { color: var(--yellow); background: color-mix(in srgb, var(--yellow) 16%, transparent); }
+  .pill[data-t="Green"].on { color: var(--green); background: color-mix(in srgb, var(--green) 14%, transparent); }
+  .pill[data-t="None"].on { color: var(--muted); background: var(--panel-2); border-color: var(--border); }
+
+  /* ---------- search bar ---------- */
+  .searchbar {
+    display: flex; gap: 8px; align-items: center; padding: 8px 14px;
+    background: var(--panel); border-bottom: 1px solid var(--border); flex: none;
+  }
+  #q {
+    flex: 1; min-width: 180px; padding: 7px 10px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text);
+    font: 13px var(--mono);
+  }
+  #q:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  .btn {
+    padding: 7px 11px; border-radius: 7px; border: 1px solid var(--border);
+    background: var(--panel-2); color: var(--text); cursor: pointer; font-size: 12px;
+    font-weight: 550; white-space: nowrap;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .count { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .count b { color: var(--text); }
+
+  /* ---------- layout ---------- */
+  main { flex: 1; display: flex; min-height: 0; }
+  aside {
+    width: 262px; flex: none; background: var(--panel); overflow-y: auto;
+    border-right: 1px solid var(--border); padding: 4px 0 20px;
+  }
+  .facet h3 {
+    margin: 0; padding: 10px 14px 6px; font-size: 11px; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .facet label {
+    display: flex; align-items: center; gap: 8px; padding: 3px 14px;
+    cursor: pointer; font-size: 12px;
+  }
+  .facet label:hover { background: var(--panel-2); }
+  .facet label span.n { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .facet input { accent-color: var(--accent); }
+  .facet .scroll { max-height: 260px; overflow-y: auto; }
+  .facet .tools { padding: 2px 14px 6px; display: flex; gap: 8px; }
+  .facet .tools a { color: var(--accent); font-size: 11px; cursor: pointer; text-decoration: none; }
+
+  .results { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  .thead {
+    display: flex; flex: none; background: var(--panel-2); border-bottom: 1px solid var(--border);
+    font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted);
+  }
+  .thead > div { padding: 7px 8px; cursor: pointer; user-select: none; }
+  .thead > div:hover { color: var(--text); }
+  #scroller { flex: 1; overflow: auto; position: relative; }
+  #sizer { position: relative; width: 100%; }
+  .row {
+    display: flex; position: absolute; left: 0; right: 0; height: var(--row-h);
+    align-items: center; border-bottom: 1px solid var(--border); cursor: pointer;
+    font-size: 12px;
+  }
+  .row:hover { background: var(--accent-soft); }
+  .row.sel { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .row > div, .thead > div { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 8px; }
+  .c-tri { width: 78px; flex: none; font-weight: 700; font-size: 11px; }
+  .c-gpo { width: 210px; flex: none; }
+  .c-type { width: 150px; flex: none; color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .c-pol { width: 74px; flex: none; color: var(--muted); }
+  .c-reach { width: 76px; flex: none; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .c-reach.hot { color: var(--red); font-weight: 700; }
+  .c-reach.none { color: var(--muted); opacity: .55; }
+  .c-reason { flex: 1; min-width: 100px; }
+  .t-Black { color: var(--black); font-weight: 700; } .t-Red { color: var(--red); }
+  .t-Yellow { color: var(--yellow); } .t-Green { color: var(--green); }
+  .t-None { color: var(--muted); font-weight: 500; }
+  mark { background: color-mix(in srgb, var(--accent) 35%, transparent); color: inherit; border-radius: 2px; }
+
+  /* ---------- detail ---------- */
+  #detail {
+    width: 440px; flex: none; background: var(--panel); border-left: 1px solid var(--border);
+    overflow-y: auto; padding: 0 0 30px;
+  }
+  #detail.hide { display: none; }
+  .dhead { position: sticky; top: 0; background: var(--panel); border-bottom: 1px solid var(--border); padding: 11px 14px; }
+  .dhead .x { float: right; cursor: pointer; color: var(--muted); font-size: 16px; line-height: 1; }
+  .dsec { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+  .dsec h4 { margin: 0 0 7px; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .kv { display: grid; grid-template-columns: minmax(90px, 38%) 1fr; gap: 3px 10px; font-size: 12px; }
+  .kv .k { color: var(--muted); font-family: var(--mono); font-size: 11px; word-break: break-all; }
+  .kv .v { font-family: var(--mono); font-size: 11px; word-break: break-all; white-space: pre-wrap; }
+  .prose { font-size: 12px; white-space: pre-wrap; }
+  .dsec.help { background: color-mix(in srgb, var(--accent, #0969da) 5%, transparent); }
+  .dsec.help > h4 { color: var(--fg); font-size: 12px; text-transform: none; letter-spacing: 0; }
+  .dsec.help .hq { font-size: 10px; text-transform: uppercase; letter-spacing: .06em;
+                   color: var(--muted); margin: 8px 0 2px; font-weight: 600; }
+  .dsec.help .prose { margin: 0; }
+  .aclwarn { font-size: 11px; color: var(--red); margin-bottom: 6px; font-weight: 600; }
+  table.acl tr.risky td { background: color-mix(in srgb, var(--red) 9%, transparent); }
+  .rflag { color: var(--red); font-weight: 700; }
+  table.acl { width: 100%; border-collapse: collapse; font-size: 11px; font-family: var(--mono); }
+  /* `overflow-wrap: anywhere` breaks only when a line genuinely does not fit,
+     where `word-break: break-all` breaks greedily -- which shredded the narrow
+     Trustee/Type columns into one character per line whenever the Rights column
+     held a long comma list. */
+  table.acl th, table.acl td { text-align: left; padding: 3px 5px; border-bottom: 1px solid var(--border); vertical-align: top; overflow-wrap: anywhere; }
+  table.acl th:nth-child(2), table.acl td:nth-child(2) { white-space: nowrap; width: 1%; }
+  table.acl th { color: var(--muted); font-weight: 600; }
+  .deny { color: var(--red); }
+  .flags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 3px; }
+  .flag { font-size: 10px; padding: 1px 6px; border-radius: 4px; background: var(--panel-2); color: var(--muted); font-family: var(--mono); }
+  .flag.hot { background: color-mix(in srgb, var(--red) 18%, transparent); color: var(--red); font-weight: 700; }
+
+  /* ---------- misc ---------- */
+  #loading { position: fixed; inset: 0; display: grid; place-items: center; background: var(--bg); z-index: 9; }
+  #loading div { text-align: center; color: var(--muted); }
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+  .hint { font-size: 11px; color: var(--muted); padding: 6px 14px 0; }
+  .hint code { background: var(--panel-2); padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+  @media (max-width: 900px) {
+    aside { display: none; }
+    #detail { position: fixed; inset: 0; width: auto; z-index: 8; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loading"><div><b>Decompressing report…</b><br><span id="loadnote"></span></div></div>
+
+<header>
+  <div class="brand">Group<span>3</span>r</div>
+  <div class="meta" id="metaline"></div>
+  <div class="pills" id="triagePills"></div>
+</header>
+
+<div class="searchbar">
+  <input id="q" type="search" spellcheck="false" placeholder="Search everything…  try: cpassword   |   trustee:&quot;Domain Users&quot;   |   computer:SRV01   |   type:SchedTask -Green">
+  <button class="btn" id="btnCsv">Export CSV</button>
+  <button class="btn" id="btnJson">Export JSON</button>
+  <button class="btn" id="btnReset">Reset</button>
+  <div class="count" id="countline"></div>
+</div>
+<div class="hint">
+  <code>term</code> all terms must match ·
+  <code>"exact phrase"</code> ·
+  <code>-exclude</code> ·
+  <code>field:value</code> where field is gpo, type, reason, detail, source, path, trustee, right, key, value, computer, container ·
+  <kbd>/</kbd> search · <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>Esc</kbd> close
+</div>
+
+<main>
+  <aside id="facets"></aside>
+  <div class="results">
+    <div class="thead">
+      <div class="c-tri" data-sort="triage">Triage</div>
+      <div class="c-gpo" data-sort="gpo">GPO</div>
+      <div class="c-type" data-sort="type">Setting type</div>
+      <div class="c-pol" data-sort="policy">Policy</div>
+      <div class="c-reach" data-sort="reach" title="Computers this GPO applies to">Reach</div>
+      <div class="c-reason" data-sort="reason">Finding</div>
+    </div>
+    <div id="scroller"><div id="sizer"></div></div>
+  </div>
+  <div id="detail" class="hide"></div>
+</main>
+
+<script id="payload" type="application/octet-stream">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</script>
+<script>
+"use strict";
+
+const TRIAGE = ["Green", "Yellow", "Red", "Black"];
+const POLICY = ["Computer", "User", "Package", "—"];
+const RAW_BYTES = 34895;
+
+let D = null;            // payload
+let S = null;            // interned strings
+let SL = null;           // lowercased strings
+let TYPES = null, TYPESL = null;
+let SC = null;                 // per-GPO serialised scope, or null when unresolved
+let N = 0;               // total rows
+let view = [];           // filtered + sorted row indices
+let selected = -1;
+let sortKey = "triage", sortDir = -1;
+
+const state = {
+  triage: new Set(["Green", "Yellow", "Red", "Black", "None"]),
+  types: null,           // null = all
+  policies: new Set([0, 1, 2, 3]),
+  gpos: null,            // null = all
+  query: "",
+  reach: null,           // null = all reach buckets
+  requireFlags: new Set(),   // "enforced" | "filtered" | "wmi"
+};
+
+/* ----------------------------------------------------------- load + inflate */
+
+async function boot() {
+  const note = document.getElementById("loadnote");
+  const b64 = document.getElementById("payload").textContent.trim();
+  note.textContent = "decoding " + fmtBytes(b64.length) + " …";
+
+  const bin = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  let text;
+  if (typeof DecompressionStream === "function") {
+    const stream = new Blob([bin]).stream().pipeThrough(new DecompressionStream("gzip"));
+    text = await new Response(stream).text();
+  } else {
+    document.getElementById("loading").innerHTML =
+      "<div>This browser lacks <code>DecompressionStream</code>. Please open the report in a current version of Firefox, Chrome, Edge or Safari.</div>";
+    return;
+  }
+  note.textContent = "parsing " + fmtBytes(text.length) + " …";
+  D = JSON.parse(text);
+  S = D.strings;
+  SL = S.map(s => s.toLowerCase());
+  TYPES = D.settingTypes;
+  TYPESL = TYPES.map(s => s.toLowerCase());
+  SC = D.scopes || [];
+  N = D.findings.gpo.length;
+
+  buildHeader();
+  buildFacets();
+  wire();
+  apply();
+  document.getElementById("loading").remove();
+}
+
+/* ------------------------------------------------------------------ helpers */
+
+function fmtBytes(n) {
+  const u = ["B", "kB", "MB", "GB"];
+  let i = 0;
+  while (n >= 1024 && i < u.length - 1) { n /= 1024; i++; }
+  return (i ? n.toFixed(1) : n) + " " + u[i];
+}
+// Scope accessors. A scope row is:
+// [count, orphaned, allLinksDisabled, enforced, filteredNarrowed, wmiIdx,
+//  [computerIdx], [noteIdx], [[containerIdx, statusIdx]], [filterPrincipalIdx],
+//  userCount]
+const scopeOf = r => (SC && SC.length ? SC[D.findings.gpo[r]] : null) || null;
+const REACH_BUCKETS = ["orphaned", "disabled", "zero", "1-10", "11-100", "101-1000", "1000+"];
+function reachBucket(r) {
+  const sc = scopeOf(r);
+  if (!sc) return "unresolved";
+  if (sc[1]) return "orphaned";
+  if (sc[2]) return "disabled";
+  const n = sc[0];
+  if (n === 0) return "zero";
+  if (n <= 10) return "1-10";
+  if (n <= 100) return "11-100";
+  if (n <= 1000) return "101-1000";
+  return "1000+";
+}
+function reachCount(r) { const sc = scopeOf(r); return sc ? sc[0] : -1; }
+function hasFlag(r, flag) {
+  const sc = scopeOf(r);
+  if (!sc) return false;
+  if (flag === "enforced") return !!sc[3];
+  if (flag === "filtered") return !!sc[4];
+  if (flag === "wmi") return !!sc[5];
+  return false;
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const triageName = v => (v < 0 ? "None" : TRIAGE[v]);
+const gpoName = r => S[D.gpos[D.findings.gpo[r]][0]] || S[D.gpos[D.findings.gpo[r]][1]] || "(unnamed GPO)";
+
+function buildHeader() {
+  const m = D.meta;
+  document.getElementById("metaline").textContent =
+    [m.domain || "offline", m.gpoCount.toLocaleString() + " GPOs",
+     m.findingCount.toLocaleString() + " findings",
+     m.rowCount.toLocaleString() + " rows",
+     "generated " + m.generated].filter(Boolean).join("  ·  ");
+
+  const counts = { ...m.triageCounts, None: m.rowCount - m.findingCount };
+  document.getElementById("triagePills").innerHTML =
+    ["Black", "Red", "Yellow", "Green", "None"].map(t =>
+      `<div class="pill on" data-t="${t}">${t} ${(counts[t] || 0).toLocaleString()}</div>`).join("");
+}
+
+/* ------------------------------------------------------------------- facets */
+
+function buildFacets() {
+  const f = D.findings;
+
+  // setting-type facet
+  const typeCounts = new Map();
+  for (let i = 0; i < N; i++) typeCounts.set(f.type[i], (typeCounts.get(f.type[i]) || 0) + 1);
+  const typeRows = [...typeCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+  // GPO facet
+  const gpoCounts = new Map();
+  for (let i = 0; i < N; i++) gpoCounts.set(f.gpo[i], (gpoCounts.get(f.gpo[i]) || 0) + 1);
+  const gpoRows = [...gpoCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([gi, c]) => [gi, c, S[D.gpos[gi][0]] || S[D.gpos[gi][1]] || "(unnamed)"]);
+
+  const scopeResolved = !!(D.meta && D.meta.scopeResolved);
+  const reachCounts = new Map();
+  if (scopeResolved) {
+    for (let i = 0; i < N; i++) {
+      const b = reachBucket(i);
+      reachCounts.set(b, (reachCounts.get(b) || 0) + 1);
+    }
+  }
+  const reachFacet = !scopeResolved ? "" : `
+    <div class="facet">
+      <h3>Reach (computers)</h3>
+      <div class="tools"><a data-all="reach">all</a><a data-none="reach">none</a></div>
+      ${["1000+", "101-1000", "11-100", "1-10", "zero", "disabled", "orphaned", "unresolved"]
+        .filter(b => reachCounts.get(b))
+        .map(b => `<label><input type="checkbox" data-reach="${b}" checked>
+          ${b === "orphaned" ? "not linked" : b === "disabled" ? "links disabled"
+            : b === "zero" ? "0 computers" : b === "unresolved" ? "unresolved" : b}
+          <span class="n">${(reachCounts.get(b) || 0).toLocaleString()}</span></label>`).join("")}
+    </div>
+    <div class="facet">
+      <h3>Only show</h3>
+      <label><input type="checkbox" data-flag="enforced"> enforced links<span class="n"></span></label>
+      <label><input type="checkbox" data-flag="filtered"> security-filtered<span class="n"></span></label>
+      <label><input type="checkbox" data-flag="wmi"> WMI-filtered<span class="n"></span></label>
+    </div>`;
+
+  document.getElementById("facets").innerHTML = `
+    ${reachFacet}
+    <div class="facet">
+      <h3>Finding type</h3>
+      <div class="tools"><a data-all="types">all</a><a data-none="types">none</a></div>
+      <div class="scroll" id="fType">
+        ${typeRows.map(([ti, c]) => `<label><input type="checkbox" data-type="${ti}" checked>
+          ${esc(TYPES[ti])}<span class="n">${c.toLocaleString()}</span></label>`).join("")}
+      </div>
+    </div>
+    <div class="facet">
+      <h3>Policy scope</h3>
+      ${[0, 1, 2, 3].map(p => `<label><input type="checkbox" data-pol="${p}" checked>
+        ${POLICY[p]}<span class="n" id="polN${p}"></span></label>`).join("")}
+    </div>
+    <div class="facet">
+      <h3>GPO <span class="n"></span></h3>
+      <div class="tools"><a data-all="gpos">all</a><a data-none="gpos">none</a></div>
+      <input id="gpoFilter" placeholder="filter GPO list…"
+             style="margin:2px 14px 6px;width:calc(100% - 28px);padding:5px 7px;border-radius:6px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:11px">
+      <div class="scroll" id="fGpo">
+        ${gpoRows.map(([gi, c, name]) => `<label data-name="${esc(name.toLowerCase())}">
+          <input type="checkbox" data-gpo="${gi}" checked>${esc(name)}<span class="n">${c.toLocaleString()}</span></label>`).join("")}
+      </div>
+    </div>`;
+}
+
+/* -------------------------------------------------------------- query model */
+
+function parseQuery(raw) {
+  const clauses = [];
+  const re = /(-?)(?:([a-z]+):)?(?:"([^"]*)"|(\S+))/gi;
+  let m;
+  while ((m = re.exec(raw)) !== null) {
+    const text = (m[3] !== undefined ? m[3] : m[4] || "").toLowerCase();
+    if (!text) continue;
+    clauses.push({ neg: m[1] === "-", field: (m[2] || "any").toLowerCase(), text });
+  }
+  // Precompute, per clause, which dictionary entries match. This is the whole
+  // trick: the vocabulary is small, so search never scales with row count.
+  for (const c of clauses) {
+    const set = new Uint8Array(S.length);
+    for (let i = 0; i < SL.length; i++) if (SL[i].includes(c.text)) set[i] = 1;
+    c.set = set;
+    c.typeHits = new Uint8Array(TYPES.length);
+    for (let i = 0; i < TYPESL.length; i++) if (TYPESL[i].includes(c.text)) c.typeHits[i] = 1;
+  }
+  return clauses;
+}
+
+function clauseHit(r, c) {
+  const f = D.findings, set = c.set;
+  switch (c.field) {
+    case "gpo": {
+      const g = D.gpos[f.gpo[r]];
+      return !!(set[g[0]] || set[g[1]] || set[g[2]] || set[g[3]]);
+    }
+    case "type":   return !!c.typeHits[f.type[r]];
+    case "reason": return !!set[f.reason[r]];
+    case "detail": return !!set[f.detail[r]];
+    case "source": return !!set[f.source[r]];
+    case "path":   return f.paths[r].some(p => set[p[0]]);
+    case "trustee":return f.aces[r].some(a => set[a[0]] || set[a[1]]);
+    case "right":  return f.aces[r].some(a => set[a[3]]);
+    case "computer": {
+      const sc = scopeOf(r);
+      return !!sc && sc[6].some(i => set[i]);
+    }
+    case "container": {
+      const sc = scopeOf(r);
+      return !!sc && sc[8].some(l => set[l[0]]);
+    }
+    case "key":    return f.fields[r].some(kv => set[kv[0]]);
+    case "value":  return f.fields[r].some(kv => set[kv[1]]);
+    default: {
+      if (set[f.reason[r]] || set[f.detail[r]] || set[f.source[r]]) return true;
+      if (c.typeHits[f.type[r]]) return true;
+      const g = D.gpos[f.gpo[r]];
+      if (set[g[0]] || set[g[1]] || set[g[2]] || set[g[3]]) return true;
+      const kvs = f.fields[r];
+      for (let i = 0; i < kvs.length; i++) if (set[kvs[i][0]] || set[kvs[i][1]]) return true;
+      const aces = f.aces[r];
+      for (let i = 0; i < aces.length; i++) {
+        const a = aces[i];
+        if (set[a[0]] || set[a[1]] || set[a[3]]) return true;
+      }
+      const ps = f.paths[r];
+      for (let i = 0; i < ps.length; i++) if (set[ps[i][0]] || set[ps[i][5]]) return true;
+      const sc = scopeOf(r);
+      if (sc) {
+        for (let i = 0; i < sc[6].length; i++) if (set[sc[6][i]]) return true;
+        for (let i = 0; i < sc[8].length; i++) if (set[sc[8][i][0]]) return true;
+      }
+      return false;
+    }
+  }
+}
+
+/* ------------------------------------------------------------ filter + sort */
+
+function apply() {
+  const f = D.findings;
+  const clauses = state.query ? parseQuery(state.query) : [];
+  const wantTypes = state.types, wantGpos = state.gpos;
+  const out = [];
+
+  for (let r = 0; r < N; r++) {
+    if (!state.triage.has(triageName(f.triage[r]))) continue;
+    if (!state.policies.has(f.policy[r])) continue;
+    if (wantTypes && !wantTypes.has(f.type[r])) continue;
+    if (wantGpos && !wantGpos.has(f.gpo[r])) continue;
+    if (state.reach && !state.reach.has(reachBucket(r))) continue;
+    if (state.requireFlags.size) {
+      let ok = true;
+      for (const flag of state.requireFlags) if (!hasFlag(r, flag)) { ok = false; break; }
+      if (!ok) continue;
+    }
+    let ok = true;
+    for (let i = 0; i < clauses.length; i++) {
+      const c = clauses[i];
+      if (clauseHit(r, c) === c.neg) { ok = false; break; }
+    }
+    if (ok) out.push(r);
+  }
+
+  view = out;
+  sortView();
+  document.getElementById("countline").innerHTML =
+    `<b>${view.length.toLocaleString()}</b> of ${N.toLocaleString()} rows`;
+  for (let p = 0; p < 4; p++) {
+    const el = document.getElementById("polN" + p);
+    if (el) el.textContent = "";
+  }
+  selected = -1;
+  document.getElementById("detail").classList.add("hide");
+  render(true);
+}
+
+function sortView() {
+  const f = D.findings, d = sortDir;
+  const key =
+    sortKey === "triage" ? (r => f.triage[r]) :
+    sortKey === "type"   ? (r => TYPESL[f.type[r]]) :
+    sortKey === "policy" ? (r => f.policy[r]) :
+    sortKey === "reach"  ? (r => reachCount(r)) :
+    sortKey === "reason" ? (r => SL[f.reason[r]]) :
+                           (r => (SL[D.gpos[f.gpo[r]][0]] || SL[D.gpos[f.gpo[r]][1]] || ""));
+  view.sort((a, b) => {
+    const ka = key(a), kb = key(b);
+    if (ka < kb) return -d;
+    if (ka > kb) return d;
+    return a - b;
+  });
+}
+
+/* ------------------------------------------------------- virtualised render */
+
+const scroller = document.getElementById("scroller");
+const sizer = document.getElementById("sizer");
+let rowH = 34, lastFirst = -1;
+
+function render(force) {
+  const total = view.length;
+  sizer.style.height = (total * rowH) + "px";
+  if (!total) {
+    sizer.innerHTML = `<div class="empty">No rows match these filters.</div>`;
+    return;
+  }
+  const vh = scroller.clientHeight;
+  const first = Math.max(0, Math.floor(scroller.scrollTop / rowH) - 8);
+  const count = Math.ceil(vh / rowH) + 16;
+  if (!force && first === lastFirst) return;
+  lastFirst = first;
+
+  const f = D.findings;
+  const parts = [];
+  for (let i = first; i < Math.min(total, first + count); i++) {
+    const r = view[i];
+    const t = triageName(f.triage[r]);
+    parts.push(
+      `<div class="row${i === selected ? " sel" : ""}" style="top:${i * rowH}px" data-i="${i}">` +
+      `<div class="c-tri t-${t}">${t}</div>` +
+      `<div class="c-gpo" title="${esc(gpoName(r))}">${esc(gpoName(r))}</div>` +
+      `<div class="c-type">${esc(TYPES[f.type[r]])}</div>` +
+      `<div class="c-pol">${POLICY[f.policy[r]]}</div>` +
+      renderReach(r) +
+      `<div class="c-reason" title="${esc(S[f.reason[r]] || "")}">${esc(S[f.reason[r]] || "—")}</div>` +
+      `</div>`);
+  }
+  sizer.innerHTML = parts.join("");
+}
+
+function renderReach(r) {
+  const sc = scopeOf(r);
+  if (!sc) return `<div class="c-reach none" title="scope not resolved">&mdash;</div>`;
+  if (sc[1]) return `<div class="c-reach none" title="not linked to any container">none</div>`;
+  if (sc[2]) return `<div class="c-reach none" title="all links disabled">off</div>`;
+  const n = sc[0];
+  const cls = n > 100 ? "c-reach hot" : "c-reach";
+  const marks = (sc[4] ? "\u2022" : "") + (sc[5] ? "\u2022" : "");
+  const title = n.toLocaleString() + " computer(s)"
+    + (sc[4] ? " \u00b7 security-filtered, may be narrower" : "")
+    + (sc[5] ? " \u00b7 WMI-filtered, may be narrower" : "");
+  return `<div class="${cls}" title="${title}">${n.toLocaleString()}${marks}</div>`;
+}
+
+/* ---------------------------------------------------------------- detail UI */
+
+function showDetail(i) {
+  selected = i;
+  const r = view[i], f = D.findings, g = D.gpos[f.gpo[r]];
+  const t = triageName(f.triage[r]);
+  const pane = document.getElementById("detail");
+
+  const links = g[10].length
+    ? `<div class="kv">${g[10].map(l => `<div class="k">${esc(S[l[0]])}</div><div class="v">${esc(S[l[1]])}</div>`).join("")}</div>`
+    : `<div class="prose" style="color:var(--muted)">No links recorded.</div>`;
+
+  const kvs = f.fields[r];
+  const settingBlock = kvs.length
+    ? `<div class="kv">${kvs.map(kv => `<div class="k">${esc(S[kv[0]])}</div><div class="v">${esc(S[kv[1]])}</div>`).join("")}</div>`
+    : `<div class="prose" style="color:var(--muted)">No setting fields.</div>`;
+
+  const aces = f.aces[r];
+  // PORT ADDITION: flag ACEs that hand write-equivalent control to a principal
+  // that is not already domain-privileged -- those are the ones worth reading.
+  const RISKY_RIGHTS = ["WRITE_DAC","WRITE_OWNER","GENERIC_ALL","GENERIC_WRITE",
+    "ALL_ACCESS","CREATE_CHILD","DELETE_CHILD","DELETE_TREE","WRITE_PROPERTY",
+    "SELF_WRITE","STANDARD_DELETE","KEY_WRITE","KEY_ALL","SET_VALUE","FILE_ALL",
+    "WRITE_DATA","APPEND_DATA","ADD_FILE","ADD_SUBDIRECTORY","Owner"];
+  const PRIVILEGED = ["domain admins","enterprise admins","administrators",
+    "local system","system","creator owner","domain controllers",
+    "enterprise domain controllers","self"];
+  const aceRisky = a => {
+    const who = (S[a[0]] || "").toLowerCase().trim();
+    if (S[a[2]] === "Deny") return false;
+    if (PRIVILEGED.some(p => who === p || who.endsWith("\\" + p))) return false;
+    const rights = S[a[3]] || "";
+    return RISKY_RIGHTS.some(x => rights.split(/,\s*/).includes(x));
+  };
+  const riskyCount = aces.filter(aceRisky).length;
+  const aclBlock = aces.length ? `${riskyCount ? `<div class="aclwarn">${riskyCount} ACE${riskyCount > 1 ? "s give" : " gives"} write-equivalent control to a non-privileged principal</div>` : ""}<table class="acl">
+      <tr><th>Trustee</th><th>Type</th><th>Rights</th></tr>
+      ${aces.map(a => `<tr class="${aceRisky(a) ? "risky" : ""}"><td>${esc(S[a[0]] || S[a[1]] || "?")}${aceRisky(a) ? ` <span class="rflag">!</span>` : ""}${S[a[1]] ? `<br><span style="color:var(--muted)">${esc(S[a[1]])}</span>` : ""}</td>
+        <td class="${S[a[2]] === "Deny" ? "deny" : ""}">${esc(S[a[2]] || "")}</td>
+        <td>${esc(S[a[3]] || "")}</td></tr>`).join("")}
+    </table>` : "";
+
+  const paths = f.paths[r];
+  const pathBlock = paths.length ? paths.map(p => {
+    const flags = [];
+    if (p[1]) flags.push(["file exists", 0]);
+    if (p[2]) flags.push(["FILE WRITABLE", 1]);
+    if (p[3]) flags.push(["dir exists", 0]);
+    if (p[4]) flags.push(["DIR WRITABLE", 1]);
+    if (p[6]) flags.push(["PARENT DIR WRITABLE", 1]);
+    if (p[8]) flags.push(["can read", 0]);
+    if (p[9]) flags.push(["can write", 1]);
+    if (p[10]) flags.push(["can modify", 1]);
+    return `<div style="margin-bottom:8px">
+      <div class="v">${esc(S[p[0]] || "")}</div>
+      ${p[5] ? `<div class="k">nearest existing parent: ${esc(S[p[5]])}</div>` : ""}
+      <div class="flags">${flags.map(([n, hot]) => `<span class="flag${hot ? " hot" : ""}">${n}</span>`).join("")}</div>
+    </div>`;
+  }).join("") : "";
+
+  // Scope ("blast radius") section, present only when --scope was used.
+  const sc = scopeOf(r);
+  let scopeBlock = "";
+  if (sc) {
+    const count = sc[0], userCount = sc[10];
+    const flags = [];
+    if (sc[1]) flags.push(["NOT LINKED", 1]);
+    if (sc[2]) flags.push(["ALL LINKS DISABLED", 1]);
+    if (sc[3]) flags.push(["enforced", 0]);
+    if (sc[4]) flags.push(["SECURITY-FILTERED", 1]);
+    if (sc[5]) flags.push(["WMI-FILTERED", 1]);
+    const listed = sc[6];
+    const principals = sc[9].map(i => S[i]).filter(Boolean);
+    const links = sc[8];
+    scopeBlock = `<div class="dsec">
+      <h4>Scope &mdash; blast radius</h4>
+      <div class="kv">
+        <div class="k">affected computers</div><div class="v">${count.toLocaleString()}</div>
+        ${userCount ? `<div class="k">affected users</div><div class="v">${userCount.toLocaleString()}</div>` : ""}
+      </div>
+      ${flags.length ? `<div class="flags">${flags.map(([n, hot]) =>
+        `<span class="flag${hot ? " hot" : ""}">${n}</span>`).join("")}</div>` : ""}
+      ${principals.length ? `<div class="k" style="margin-top:7px">Apply Group Policy granted to</div>
+        <div class="v">${esc(principals.join(", "))}</div>` : ""}
+      ${links.length ? `<div class="k" style="margin-top:7px">Links</div>
+        <div class="kv">${links.map(l =>
+          `<div class="v">${esc(S[l[0]] || "")}</div><div class="k">${esc(S[l[1]] || "")}</div>`).join("")}</div>` : ""}
+      ${sc[5] ? `<div class="k" style="margin-top:7px">WMI filter</div>
+        <div class="v">${esc(S[sc[5]] || "")}</div>` : ""}
+      ${listed.length ? `<div class="k" style="margin-top:7px">Computers${
+          count > listed.length ? ` (first ${listed.length} of ${count.toLocaleString()})` : ""}</div>
+        <div class="v" style="max-height:220px;overflow:auto">${
+          listed.map(i => esc(S[i] || "")).join("<br>")}</div>` : ""}
+      ${sc[7].length ? `<div class="prose" style="margin-top:8px;color:var(--muted)">${
+          sc[7].map(i => esc(S[i] || "")).join("<br>")}</div>` : ""}
+    </div>`;
+  }
+
+  // PORT ADDITION: operator guidance for this finding class, from
+  // view/finding_help.py. -1 means no entry matched.
+  const helpIdx = f.help ? f.help[r] : -1;
+  const h = (helpIdx >= 0 && D.helpEntries) ? D.helpEntries[helpIdx] : null;
+  const helpBlock = h ? `<div class="dsec help">
+      <h4>${esc(h.title)}</h4>
+      <div class="hq">What this is</div><div class="prose">${esc(h.what)}</div>
+      <div class="hq">How it is abused</div><div class="prose">${esc(h.abuse)}</div>
+      <div class="hq">How to fix it</div><div class="prose">${esc(h.fix)}</div>
+    </div>` : "";
+
+  pane.classList.remove("hide");
+  pane.innerHTML = `
+    <div class="dhead">
+      <span class="x" id="dclose">✕</span>
+      <div class="t-${t}" style="font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.06em">${t}</div>
+      <div style="font-weight:600;margin-top:2px">${esc(TYPES[f.type[r]])}</div>
+      <div class="meta">${esc(gpoName(r))}</div>
+    </div>
+    ${S[f.reason[r]] ? `<div class="dsec"><h4>Finding</h4><div class="prose">${esc(S[f.reason[r]])}</div></div>` : ""}
+    ${S[f.detail[r]] ? `<div class="dsec"><h4>Detail</h4><div class="prose">${esc(S[f.detail[r]])}</div></div>` : ""}
+    ${helpBlock}
+    ${scopeBlock}
+    ${aclBlock ? `<div class="dsec"><h4>Access control</h4>${aclBlock}</div>` : ""}
+    ${pathBlock ? `<div class="dsec"><h4>Assessed paths</h4>${pathBlock}</div>` : ""}
+    <div class="dsec"><h4>Setting</h4>${settingBlock}</div>
+    <div class="dsec"><h4>Source file</h4><div class="v">${esc(S[f.source[r]] || "—")}</div></div>
+    <div class="dsec"><h4>GPO</h4>
+      <div class="kv">
+        <div class="k">display name</div><div class="v">${esc(S[g[0]] || "")}</div>
+        <div class="k">uid</div><div class="v">${esc(S[g[1]] || "")}</div>
+        <div class="k">sysvol path</div><div class="v">${esc(S[g[2]] || "")}</div>
+        <div class="k">distinguished name</div><div class="v">${esc(S[g[3]] || "")}</div>
+        <div class="k">version</div><div class="v">${esc(S[g[4]] || "")}</div>
+        <div class="k">computer policy</div><div class="v">${g[5] ? "enabled" : "disabled"}</div>
+        <div class="k">user policy</div><div class="v">${g[6] ? "enabled" : "disabled"}</div>
+        <div class="k">morphed (NTFRS)</div><div class="v">${g[7] ? "yes" : "no"}</div>
+        <div class="k">created</div><div class="v">${esc(S[g[8]] || "")}</div>
+        <div class="k">modified</div><div class="v">${esc(S[g[9]] || "")}</div>
+      </div>
+    </div>
+    <div class="dsec"><h4>GPO links</h4>${links}</div>`;
+  document.getElementById("dclose").onclick = () => {
+    pane.classList.add("hide"); selected = -1; render(true);
+  };
+  render(true);
+}
+
+/* ---------------------------------------------------------------- exporting */
+
+function exportRows(kind) {
+  const f = D.findings;
+  if (kind === "csv") {
+    const q = s => `"${String(s == null ? "" : s).replace(/"/g, '""')}"`;
+    const lines = ["Triage,GPO,GPO UID,Setting type,Policy,Affected computers,Scope flags,Finding reason,Finding detail,Source,Sysvol path"];
+    for (const r of view) {
+      const g = D.gpos[f.gpo[r]];
+      const sc = scopeOf(r);
+      const reach = sc ? (sc[1] ? "not linked" : sc[2] ? "links disabled" : sc[0]) : "";
+      const scFlags = !sc ? "" : [sc[3] ? "enforced" : "", sc[4] ? "security-filtered" : "",
+                                  sc[5] ? "wmi-filtered" : ""].filter(Boolean).join(" ");
+      lines.push([triageName(f.triage[r]), S[g[0]], S[g[1]], TYPES[f.type[r]], POLICY[f.policy[r]],
+                  reach, scFlags,
+                  S[f.reason[r]], S[f.detail[r]], S[f.source[r]], S[g[2]]].map(q).join(","));
+    }
+    download(lines.join("\r\n"), "group3r-filtered.csv", "text/csv");
+  } else {
+    const rows = view.map(r => {
+      const g = D.gpos[f.gpo[r]];
+      return {
+        triage: triageName(f.triage[r]),
+        gpo: { displayName: S[g[0]], uid: S[g[1]], pathInSysvol: S[g[2]], distinguishedName: S[g[3]] },
+        settingType: TYPES[f.type[r]],
+        scope: (() => {
+          const sc = scopeOf(r);
+          if (!sc) return null;
+          return {
+            affectedComputerCount: sc[0],
+            affectedUserCount: sc[10],
+            notLinked: !!sc[1],
+            allLinksDisabled: !!sc[2],
+            enforced: !!sc[3],
+            securityFilteringNarrowed: !!sc[4],
+            wmiFilter: S[sc[5]] || null,
+            applyGroupPolicyGrantedTo: sc[9].map(i => S[i]).filter(Boolean),
+            links: sc[8].map(l => ({ container: S[l[0]], status: S[l[1]] })),
+            computers: sc[6].map(i => S[i]),
+            computersTruncated: sc[0] > sc[6].length,
+            notes: sc[7].map(i => S[i]),
+          };
+        })(),
+        policyType: POLICY[f.policy[r]],
+        findingReason: S[f.reason[r]] || null,
+        findingDetail: S[f.detail[r]] || null,
+        source: S[f.source[r]] || null,
+        setting: Object.fromEntries(f.fields[r].map(kv => [S[kv[0]], S[kv[1]]])),
+        acl: f.aces[r].map(a => ({ trustee: S[a[0]], sid: S[a[1]], type: S[a[2]], rights: S[a[3]] })),
+        paths: f.paths[r].map(p => ({
+          path: S[p[0]], fileExists: !!p[1], fileWritable: !!p[2],
+          directoryExists: !!p[3], directoryWritable: !!p[4],
+          parentDirectoryExists: S[p[5]] || null, parentDirectoryWritable: !!p[6],
+          canRead: !!p[8], canWrite: !!p[9], canModify: !!p[10],
+        })),
+      };
+    });
+    download(JSON.stringify({ meta: D.meta, filter: state.query, rows }, null, 1),
+             "group3r-filtered.json", "application/json");
+  }
+}
+
+function download(text, name, mime) {
+  const url = URL.createObjectURL(new Blob([text], { type: mime }));
+  const a = document.createElement("a");
+  a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ------------------------------------------------------------------- wiring */
+
+let debounce = null;
+
+function wire() {
+  document.getElementById("q").addEventListener("input", e => {
+    clearTimeout(debounce);
+    const v = e.target.value;
+    debounce = setTimeout(() => { state.query = v; apply(); }, 160);
+  });
+
+  document.getElementById("triagePills").addEventListener("click", e => {
+    const pill = e.target.closest(".pill");
+    if (!pill) return;
+    const t = pill.dataset.t;
+    if (state.triage.has(t)) { state.triage.delete(t); pill.classList.remove("on"); }
+    else { state.triage.add(t); pill.classList.add("on"); }
+    apply();
+  });
+
+  document.getElementById("facets").addEventListener("change", e => {
+    const el = e.target;
+    if (el.dataset.type !== undefined) state.types = collect("[data-type]", "type");
+    else if (el.dataset.gpo !== undefined) state.gpos = collect("[data-gpo]", "gpo");
+    else if (el.dataset.pol !== undefined) {
+      state.policies = new Set([...document.querySelectorAll("[data-pol]")]
+        .filter(x => x.checked).map(x => +x.dataset.pol));
+    }
+    else if (el.dataset.reach !== undefined) {
+      const boxes = [...document.querySelectorAll("[data-reach]")];
+      const on = boxes.filter(b => b.checked).map(b => b.dataset.reach);
+      state.reach = on.length === boxes.length ? null : new Set(on);
+    }
+    else if (el.dataset.flag !== undefined) {
+      state.requireFlags = new Set([...document.querySelectorAll("[data-flag]")]
+        .filter(x => x.checked).map(x => x.dataset.flag));
+    }
+    apply();
+  });
+
+  document.getElementById("facets").addEventListener("click", e => {
+    const a = e.target.closest("a[data-all],a[data-none]");
+    if (!a) return;
+    const group = a.dataset.all || a.dataset.none;
+    const on = !!a.dataset.all;
+    const sel = group === "types" ? "[data-type]"
+              : group === "reach" ? "[data-reach]" : "[data-gpo]";
+    document.querySelectorAll(sel).forEach(x => {
+      const label = x.closest("label");
+      if (label && label.style.display === "none") return;   // respect list filter
+      x.checked = on;
+    });
+    if (group === "reach") {
+      const boxes = [...document.querySelectorAll(sel)];
+      const checked = boxes.filter(b => b.checked).map(b => b.dataset.reach);
+      state.reach = checked.length === boxes.length ? null : new Set(checked);
+    } else {
+      state[group] = collect(sel, group === "types" ? "type" : "gpo");
+    }
+    apply();
+  });
+
+  const gf = document.getElementById("gpoFilter");
+  if (gf) gf.addEventListener("input", () => {
+    const needle = gf.value.toLowerCase();
+    document.querySelectorAll("#fGpo label").forEach(l => {
+      l.style.display = !needle || l.dataset.name.includes(needle) ? "" : "none";
+    });
+  });
+
+  document.querySelectorAll(".thead [data-sort]").forEach(h => {
+    h.addEventListener("click", () => {
+      const k = h.dataset.sort;
+      if (sortKey === k) sortDir = -sortDir;
+      else { sortKey = k; sortDir = k === "triage" ? -1 : 1; }
+      sortView(); render(true);
+    });
+  });
+
+  scroller.addEventListener("scroll", () => render(false), { passive: true });
+  sizer.addEventListener("click", e => {
+    const row = e.target.closest(".row");
+    if (row) showDetail(+row.dataset.i);
+  });
+
+  document.getElementById("btnCsv").onclick = () => exportRows("csv");
+  document.getElementById("btnJson").onclick = () => exportRows("json");
+  document.getElementById("btnReset").onclick = () => {
+    state.query = ""; document.getElementById("q").value = "";
+    state.triage = new Set(["Green", "Yellow", "Red", "Black", "None"]);
+    state.policies = new Set([0, 1, 2, 3]);
+    state.types = null; state.gpos = null;
+    state.reach = null; state.requireFlags = new Set();
+    document.querySelectorAll("[data-flag]").forEach(x => x.checked = false);
+    document.querySelectorAll("#facets input[type=checkbox]").forEach(x => x.checked = true);
+    document.querySelectorAll(".pill").forEach(p => p.classList.add("on"));
+    apply();
+  };
+
+  window.addEventListener("keydown", e => {
+    if (e.key === "/" && document.activeElement.id !== "q") {
+      e.preventDefault(); document.getElementById("q").focus();
+    } else if (e.key === "Escape") {
+      document.getElementById("detail").classList.add("hide");
+      selected = -1; render(true);
+    } else if ((e.key === "j" || e.key === "k") && document.activeElement.id !== "q") {
+      const next = Math.min(view.length - 1, Math.max(0, selected + (e.key === "j" ? 1 : -1)));
+      if (view.length) {
+        showDetail(next);
+        scroller.scrollTop = Math.max(0, next * rowH - scroller.clientHeight / 2);
+      }
+    }
+  });
+
+  window.addEventListener("resize", () => render(true));
+}
+
+function collect(selector, attr) {
+  const boxes = [...document.querySelectorAll(selector)];
+  const checked = boxes.filter(b => b.checked).map(b => +b.dataset[attr]);
+  return checked.length === boxes.length ? null : new Set(checked);
+}
+
+boot().catch(err => {
+  document.getElementById("loading").innerHTML =
+    "<div><b>Failed to load report</b><br>" + esc(err && err.message || err) + "</div>";
+});
+</script>
+</body>
+</html>

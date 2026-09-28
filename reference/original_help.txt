@@ -1,0 +1,44 @@
+  .,-:::::/ :::::::..       ...      ...    :::::::::::::.  .::.   :::::::..  
+,;;-'````'  ;;;;``;;;;   .;;;;;;;.   ;;     ;;; `;;;```.;;;;'`';;, ;;;;``;;;; 
+[[[   [[[[[[/[[[,/[[['  ,[[     \[[,[['     [[[  `]]nnn]]'    .n[[  [[[,/[[[' 
+'$$c.    '$$ $$$$$$c    $$$,     $$$$$      $$$   $$$''      ``'$$$ $$$$$$c   
+ `Y8bo,,,o88o888b '88bo,'888,_ _,88P88    .d888   888o       ,,o888 888b'''8b,
+   `'YMUP'YMMMMMM  'W'   'YMMMMMP'  'YmmMMMM''   YMMMb      YMMP'  MMMM   'WM;
+                                                    github.com/Group3r/Group3r
+                                                            @mikeloss         
+                                                                              
+Gaze not into the abyss, lest you become recognized as an abyss domain expert,
+and they expect you keep gazing into the damn thing... - @nickm_tor           
+
+
+
+Usage:
+	-c, --dc[optional]... Target Domain controller 
+
+	-d, --domain[optional]... Domain to query. 
+
+	-h, --help[optional]... Displays this help. 
+
+	-o, --offline[optional]... Disables checks that require LDAP comms with a DC or SMB comms with file shares found in policy settings. Requires that you define a value for -y. 
+
+	-f, --outfile[optional]... Path for output file. You probably want this if you're not using -s. 
+
+	-s, --stdout[optional]... Enables outputting results to stdout as soon as they're found. You probably want this if you're not using -f. 
+
+	-y, --sysvol[optional]... Set the path to a domain SYSVOL directory. 
+
+	-t, --threads[optional]... Max number of threads. Defaults to 10. 
+
+	-v, --verobsity[optional]... Sets verobsity level. Do you want degubs? Options are 'info' (default), 'debug', 'degub', and 'trace'. 
+
+	-r, --currentonly[optional]... Only checks current policies, ignoring stuff in those Policies_NTFRS_* directories that result from replication failures. 
+
+	-w, --findingsonly[optional]... Only displays settings that had an associated finding. 
+
+	-a, --mintriage[optional]... Minimum severity of findings to show where 1 is lowest severity and 4 is highest. 
+
+	-u, --testuser[optional]... Permission checks will focus on what access is available to this user. Format as domain\user 
+
+	-e, --enabled[optional]... Only displays policy types and settings that are enabled. 
+
+

@@ -1,0 +1,4 @@
+-r requirements.txt
+# Test suite
+pytest>=8.0
+playwright>=1.40    # headless Chromium for the HTML report tests
